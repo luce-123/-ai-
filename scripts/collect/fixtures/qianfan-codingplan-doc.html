@@ -1,0 +1,465 @@
+<!doctype html>
+<!-- 真实切片：百度千帆 Coding Plan 官方文档页（cloud.baidu.com/doc/qianfan/s/imlg0beiu）
+     用途：离线验证 blocks + on:'html' 能在静态文档页上按档位分块取值 -->
+/li><li class="breadcrumb__item breadcrumb__ellipsis"><span class="breadcrumb__ellipsis-trigger">...</span></li></ul><nav class="toc" style="right:0"><div class="title">有问题</div><a class="btn-consult" href="https://cloud.baidu.com/survey/expert-consulting-service.html" target="_blank"><span>预约专家咨询</span></a><div class="toc-split-line"></div><div class="title">本页目录</div><div class="toc-menu-wrapper" style="height:auto"><ul class="toc-menu" id="toc-menu"><li class="toc-menu__item toc-menu__item--level-2 toc-menu__item--active"><a class="link" href="#套餐详情" style="padding-left:0">套餐详情</a></li><li class="toc-menu__item toc-menu__item--level-3"><a class="link" href="#套餐价格与限额" style="padding-left:16px">套餐价格与限额</a></li><li class="toc-menu__item toc-menu__item--level-3"><a class="link" href="#套餐额度刷新规则" style="padding-left:16px">套餐额度刷新规则</a></li><li class="toc-menu__item toc-menu__item--level-3"><a class="link" href="#套餐额度使用限制说明" style="padding-left:16px">套餐额度使用限制说明</a></li><li class="toc-menu__item toc-menu__item--level-3"><a class="link" href="#支持的模型和工具" style="padding-left:16px">支持的模型和工具</a></li><li class="toc-menu__item toc-menu__item--level-2"><a class="link" href="#订阅套餐" style="padding-left:0">订阅套餐</a></li><li class="toc-menu__item toc-menu__item--level-2"><a class="link" href="#coding-plan与常规服务的不同点" style="padding-left:0">Coding Plan与常规服务的不同点</a></li><li class="toc-menu__item toc-menu__item--level-3"><a class="link" href="#model-入参" style="padding-left:16px">model 入参</a></li><li class="toc-menu__item toc-menu__item--level-3"><a class="link" href="#baseurl" style="padding-left:16px">BaseUrl</a></li><li class="toc-menu__item toc-menu__item--level-3"><a class="link" href="#api-key" style="padding-left:16px">API Key</a></li><li class="toc-menu__item toc-menu__item--level-2"><a class="link" href="#快速接入编程工具" style="padding-left:0">快速接入编程工具</a></li><li class="toc-menu__item toc-menu__item--level-2"><a class="link" href="#订阅管理" style="padding-left:0">订阅管理</a></li><li class="toc-menu__item toc-menu__item--level-3"><a class="link" href="#套餐退订" style="padding-left:16px">套餐退订</a></li><li class="toc-menu__item toc-menu__item--level-3"><a class="link" href="#自动续费" style="padding-left:16px">自动续费</a></li><li class="toc-menu__item toc-menu__item--level-3"><a class="link" href="#套餐升降级" style="padding-left:16px">套餐升降级</a></li><li class="toc-menu__item toc-menu__item--level-2"><a class="link" href="#专属错误码" style="padding-left:0">专属错误码</a></li><li class="toc-menu__item toc-menu__item--level-2"><a class="link" href="#qa" style="padding-left:0">Q&amp;A</a></li><li class="toc-menu__item toc-menu__item--level-3"><a class="link" href="#1常见报错问题解答" style="padding-left:16px">1.常见报错问题解答</a></li><li class="toc-menu__item toc-menu__item--level-4"><a class="link" href="#问题一：400-invalid-content-typeimage_url-is-only-suppoby-certain-models" style="padding-left:32px">问题一：400 Invalid content type.image_url is only suppoby certain models</a></li><li class="toc-menu__item toc-menu__item--level-4"><a class="link" href="#问题二：400-message-format-error-index5-should-be-tool-but-is-assistant" style="padding-left:32px">问题二：400 Message format error, index[5] should be [tool] but is [assistant]</a></li><li class="toc-menu__item toc-menu__item--level-4"><a class="link" href="#问题三：401-coding-plan-api-key-is-not-allowed-for-non-coding-plan-requests" style="padding-left:32px">问题三：401 Coding Plan API key is not allowed for non-Coding Plan requests</a></li><li class="toc-menu__item toc-menu__item--level-4"><a class="link" href="#问题四：401-the-model-does-not-exist-or-you-do-not-have-access-to-it" style="padding-left:32px">问题四：401 The model does not exist or you do not have access to it</a></li><li class="toc-menu__item toc-menu__item--level-4"><a class="link" href="#问题五：429-api-rate-limit-reached--the-current-model-is-experiencing-high-demand" style="padding-left:32px">问题五：429 API rate limit reached / The current model is experiencing high demand</a></li><li class="toc-menu__item toc-menu__item--level-3"><a class="link" href="#3-回答异常问题解答" style="padding-left:16px">3. 回答异常问题解答</a></li><li class="toc-menu__item toc-menu__item--level-4"><a class="link" href="#问题：coding-plan模型回答：作为一个人工智能语言模型，我还没学习如何回答这个问题，您可以向我问一些其它的问题，我会尽力帮您解决的。" style="padding-left:32px">问题：Coding Plan模型回答：“作为一个人工智能语言模型，我还没学习如何回答这个问题，您可以向我问一些其它的问题，我会尽力帮您解决的。”</a></li></ul></div></nav><div class="post" id="___gatsby_post"><h1 class="post__title">Coding Plan</h1><div class="post__description"><div class="post__date">更新时间<!-- -->：<!-- -->2026-06-03</div></div><div class="post__body"><p>千帆 Coding Plan 是百度千帆为开发者打造的 AI 编码订阅服务，支持接入多种主流代码模型，兼容主流 AI 编程工具，覆盖代码编写、理解与优化等场景，全面提升开发效率与代码质量。</p>
+<h2 id="套餐详情"><a href="#%E5%A5%97%E9%A4%90%E8%AF%A6%E6%83%85" aria-label="套餐详情 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>套餐详情</h2>
+<h3 id="套餐价格与限额"><a href="#%E5%A5%97%E9%A4%90%E4%BB%B7%E6%A0%BC%E4%B8%8E%E9%99%90%E9%A2%9D" aria-label="套餐价格与限额 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>套餐价格与限额</h3>
+<table>
+<thead>
+<tr>
+<th>套餐类型</th>
+<th>价格</th>
+<th>用量限制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Coding Plan Lite</strong></td>
+<td>¥ 40 / 月</td>
+<td>每 5 小时：最多约 1,200 次请求<br>每周：最多约 9,000 次请求<br>每订阅月：最多约 18,000 次请求</td>
+</tr>
+<tr>
+<td><strong>Coding Plan Pro</strong></td>
+<td>¥ 200 / 月</td>
+<td>每 5 小时：最多约 6,000 次请求<br>每周：最多约 45,000 次请求<br>每订阅月：最多约 90,000 次请求</td>
+</tr>
+</tbody>
+</table>
+<h3 id="套餐额度刷新规则"><a href="#%E5%A5%97%E9%A4%90%E9%A2%9D%E5%BA%A6%E5%88%B7%E6%96%B0%E8%A7%84%E5%88%99" aria-label="套餐额度刷新规则 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>套餐额度刷新规则</h3>
+<p>套餐额度在时间周期内耗尽后，需要等待下一个周期自动恢复额度，不会消耗其他资源包或账户余额。</p>
+<ul>
+<li>每5小时限额：根据实际请求发生时间，滑动5小时窗口动态刷新。</li>
+<li>每周限额：每周一 00:00:00（UTC+8）重置。</li>
+<li>每月限额：在下一个月订阅日的 00:00:00 (UTC+8) 重置。</li>
+</ul>
+<h3 id="套餐额度使用限制说明"><a href="#%E5%A5%97%E9%A4%90%E9%A2%9D%E5%BA%A6%E4%BD%BF%E7%94%A8%E9%99%90%E5%88%B6%E8%AF%B4%E6%98%8E" aria-label="套餐额度使用限制说明 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>套餐额度使用限制说明</h3>
+<ul>
+<li>套餐额度仅可在编程工具（如 Claude Code、Qwen Code 等）中使用，禁止以 API 调用的形式用于自动化脚本、自定义应用程序后端或任何非交互式批量调用场景。将套餐 API Key 用于允许范围之外的调用将被视为违规或滥用，可能会导致调用限流、订阅停用或账号封禁。</li>
+<li>Coding Plan速率限制（并发）与套餐等级相关，平台会根据资源情况动态调整。Lite版本建议使用的终端数量不超过1个，Pro版本建议使用的终端不超过2个，多终端使用可能会导致请求失败。</li>
+<li>高峰期使用Coding Plan可能会出现请求超限情况，建议您间隔一段时间后重试或者更换其他模型。</li>
+</ul>
+<blockquote>
+<p><strong>特别说明：</strong>如在多个实例上同时开启 OpenClaw（例如在多台机器或多个容器中运行），可能会触发平台限流策略，从而出现限流报错。</p>
+</blockquote>
+<h3 id="支持的模型和工具"><a href="#%E6%94%AF%E6%8C%81%E7%9A%84%E6%A8%A1%E5%9E%8B%E5%92%8C%E5%B7%A5%E5%85%B7" aria-label="支持的模型和工具 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>支持的模型和工具</h3>
+<p>使用不同模型/工具时，抵扣系数有所不同（例如 GLM-5 高峰期调用 1 次抵扣套餐额度 3 次，低峰期抵扣 2 次），各模型/工具的具体抵扣系数详见下表：</p>
+<table>
+<thead>
+<tr>
+<th>模型/工具名称</th>
+<th>版本</th>
+<th>抵扣系数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kimi-K2.5</td>
+<td>Kimi-K2.5</td>
+<td>1</td>
+</tr>
+<tr>
+<td>DeepSeek-V3.2</td>
+<td>DeepSeek-V3.2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>DeepSeek-V4-Pro</td>
+<td>DeepSeek-V4-Pro</td>
+<td>高峰期：5 / 低峰期：4</td>
+</tr>
+<tr>
+<td>DeepSeek-V4-Flash</td>
+<td>DeepSeek-V4-Flash</td>
+<td>1</td>
+</tr>
+<tr>
+<td>GLM-5</td>
+<td>GLM-5</td>
+<td>高峰期：3 / 低峰期：2</td>
+</tr>
+<tr>
+<td>GLM-5.1</td>
+<td>GLM-5.1</td>
+<td>高峰期：4 / 低峰期：3</td>
+</tr>
+<tr>
+<td>MiniMax-M2.5</td>
+<td>MiniMax-M2.5（即将下线）</td>
+<td>1</td>
+</tr>
+<tr>
+<td>ERNIE-4.5-Turbo-20260402</td>
+<td>ERNIE-4.5-Turbo-20260402</td>
+<td>1</td>
+</tr>
+<tr>
+<td>百度搜索</td>
+<td>-</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<p>高峰期：每日，10:30-12:00， 14:00-18:00（非固定值，随流量变化）</p>
+<p>DeepSeek-V4-Flash和GLM-5.1为尝鲜体验版，服务资源有限，后续逐步扩容。如遇排队，建议使用其他模型。</p>
+<h2 id="订阅套餐"><a href="#%E8%AE%A2%E9%98%85%E5%A5%97%E9%A4%90" aria-label="订阅套餐 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>订阅套餐</h2>
+<p><strong>特别说明：</strong>Coding Plan 套餐服务一经购买不支持退订退款，请谨慎下单。</p>
+<ol>
+<li>访问<a href="https://console.bce.baidu.com/qianfan/resource/subscribe" target="_blank" rel="nofollow noopener noreferrer">百度千帆订阅管理页面</a>，根据实际需求选择并购买套餐。</li>
+</ol>
+<p><img src="https://bce.bdstatic.com/doc/bce-doc/qianfan/image_3f6ab0a.png" alt="image.png"></p>
+<ol start="2">
+<li>购买完成后，可在<a href="https://console.bce.baidu.com/qianfan/resource/subscribe" target="_blank" rel="nofollow noopener noreferrer">百度千帆订阅管理页面</a>查看套餐用量、升级与续费套餐。</li>
+</ol>
+<p><img src="https://bce.bdstatic.com/doc/bce-doc/qianfan/image_f5b4f2b.png" alt="image.png"></p>
+<ol start="3">
+<li>创建 Coding Plan 专属 API Key。</li>
+</ol>
+<h2 id="coding-plan与常规服务的不同点"><a href="#coding-plan%E4%B8%8E%E5%B8%B8%E8%A7%84%E6%9C%8D%E5%8A%A1%E7%9A%84%E4%B8%8D%E5%90%8C%E7%82%B9" aria-label="coding plan与常规服务的不同点 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Coding Plan与常规服务的不同点</h2>
+<h3 id="model-入参"><a href="#model-%E5%85%A5%E5%8F%82" aria-label="model 入参 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>model 入参</h3>
+<style>
+.doc-card{
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;
+background:#fff;
+border:1px solid #e5e6eb;
+border-radius:10px;
+padding:22px;
+margin:24px 0;
+box-shadow:0 2px 6px rgba(0,0,0,0.04);
+}
+
+/* 标题 */
+.doc-title{
+font-size:18px;
+font-weight:600;
+margin-bottom:6px;
+}
+
+.doc-desc{
+color:#6b7280;
+font-size:14px;
+margin-bottom:18px;
+}
+
+/* tabs */
+
+.tabs input{
+display:none;
+}
+
+.tab-header{
+display:flex;
+gap:8px;
+border-bottom:1px solid #e5e6eb;
+margin-bottom:8px;
+}
+
+.tab-header label{
+padding:8px 14px;
+font-size:14px;
+cursor:pointer;
+color:#4e5969;
+border-radius:6px 6px 0 0;
+transition:.2s;
+}
+
+.tab-header label:hover{
+background:#f2f3f5;
+}
+
+#tab1:checked ~ .tab-header label[for="tab1"],
+#tab2:checked ~ .tab-header label[for="tab2"]{
+color:#165dff;
+font-weight:500;
+border-bottom:2px solid #165dff;
+}
+
+/* 内容区 */
+
+.tab-content{
+display:none;
+padding-top:2px;
+}
+
+#tab1:checked ~ .content1,
+#tab2:checked ~ .content2{
+display:block;
+}
+
+/* notice */
+
+.notice{
+background:#fffbe6;
+border-left:4px solid #ffc53d;
+padding:12px 14px;
+border-radius:4px;
+margin:10px 0 12px 0;
+font-size:13px;
+}
+
+.model-list{
+display:flex;
+flex-direction:column;
+gap:8px;
+margin-top:6px;
+}
+
+.model-tag{
+display:block;
+background:#f2f3f5;
+padding:4px 10px;
+border-radius:6px;
+font-family:monospace;
+font-size:13px;
+width:fit-content;
+}
+
+.model-tag::before{
+content:"· ";
+font-weight:700;
+font-size:16px;
+}
+
+.model-tag:hover{
+background:#e8f3ff;
+color:#165dff;
+}
+
+.model-tag-inline{
+display:inline-block;
+}
+
+.model-tag-inline::before{
+content:"";
+}
+
+/* 说明块 */
+
+.note-box{
+margin-top:12px;
+background:#f7f8fa;
+border:1px solid #e5e6eb;
+border-radius:6px;
+padding:14px;
+font-size:13px;
+color:#4e5969;
+}
+</style>
+<p>千帆Coding Plan支持以下两种方式配置模型：</p>
+<div class="doc-card">
+<div class="tabs">
+<input type="radio" name="tab" id="tab1" checked>
+<input type="radio" name="tab" id="tab2">
+<div class="tab-header">
+<label for="tab1">固定 Model Name（控制台配置）</label>
+<label for="tab2">自定义 Model Name（配置文件指定）</label>
+</div>
+<div class="tab-content content2">
+<p>在配置文件中指定 Model Name，可实时切换模型。当前支持配置的 Model Name：</p>
+<div class="model-list">
+<span class="model-tag">kimi-k2.5</span>
+<span class="model-tag">deepseek-v3.2</span>
+<span class="model-tag">glm-5</span>
+<span class="model-tag">minimax-m2.5</span>
+<span class="model-tag">ernie-4.5-turbo-20260402</span>
+<span class="model-tag">deepseek-v4-flash</span>
+<span class="model-tag">glm-5.1</span>
+</div>
+</div>
+<div class="tab-content content1">
+1. 在配置文件中指定模型为 <span class="model-tag model-tag-inline">qianfan-code-latest</span>
+<p>2.通过百度千帆控制台<a href="https://console.bce.baidu.com/qianfan/resource/subscribe" target="_blank" rel="nofollow noopener noreferrer">系统配置-订阅管理</a>页面调整配置，调整后预计一分钟左右生效。
+<img src="https://bce.bdstatic.com/doc/bce-doc/qianfan/image_2f26c5e.png" alt="image.png"></p>
+</div>
+</div>
+</div>
+<h3 id="baseurl"><a href="#baseurl" aria-label="baseurl permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BaseUrl</h3>
+<p>Coding Plan 有专属服务接口，与常规 MaaS 服务接口不同。接口 Base URL 如下</p>
+<ul>
+<li>兼容 OpenAI 接口协议的Base URL：<code>https://qianfan.baidubce.com/v2/coding</code>，如果是接口调用，完整路径为：<code>https://qianfan.baidubce.com/v2/coding/chat/completions</code></li>
+<li>兼容 Anthropic 接口协议的Base URL：<code>https://qianfan.baidubce.com/anthropic/coding</code>，如果是接口调用，完整路径为：<code>https://qianfan.baidubce.com/anthropic/coding/v1/messages</code></li>
+</ul>
+<h3 id="api-key"><a href="#api-key" aria-label="api key permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Key</h3>
+<p>Coding Plan 会生成专属 API Key，这个 API Key 只可以用于 Coding Plan 专属接口，接口地址参考 BaseUrl 描述</p>
+<p><img src="https://bce.bdstatic.com/doc/bce-doc/qianfan/image_b85ca50.png" alt="image.png"></p>
+<h2 id="快速接入编程工具"><a href="#%E5%BF%AB%E9%80%9F%E6%8E%A5%E5%85%A5%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7" aria-label="快速接入编程工具 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>快速接入编程工具</h2>
+<p>编程工具接入方案，参考接入工具指南：</p>
+<ol>
+<li><a href="https://cloud.baidu.com/doc/qianfan/s/0mn2mnemj" target="_blank" rel="nofollow noopener noreferrer">Claude Code</a> 接入指南</li>
+<li><a href="https://cloud.baidu.com/doc/qianfan/s/ommymvojr" target="_blank" rel="nofollow noopener noreferrer">Cursor</a> 接入指南</li>
+<li><a href="https://cloud.baidu.com/doc/qianfan/s/Rmn2ms2nm" target="_blank" rel="nofollow noopener noreferrer">OpenClaw</a> 接入指南</li>
+</ol>
+<p>如需接入更多AI 工具，请查看接入AI工具列表。</p>
+<h2 id="订阅管理"><a href="#%E8%AE%A2%E9%98%85%E7%AE%A1%E7%90%86" aria-label="订阅管理 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>订阅管理</h2>
+<h3 id="套餐退订"><a href="#%E5%A5%97%E9%A4%90%E9%80%80%E8%AE%A2" aria-label="套餐退订 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>套餐退订</h3>
+<p>Coding Plan不支持退订，购买前请谨慎选择。</p>
+<h3 id="自动续费"><a href="#%E8%87%AA%E5%8A%A8%E7%BB%AD%E8%B4%B9" aria-label="自动续费 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>自动续费</h3>
+<p>成功购买千帆Coding Plan后，可在控制台开通到期自动续费，避免套餐过期而导致资源释放。自动续费周期为每月，在套餐到期前的7/3/1天分别扣费，直至扣费成功。您可随时在控制台取消自动续费。</p>
+<h3 id="套餐升降级"><a href="#%E5%A5%97%E9%A4%90%E5%8D%87%E9%99%8D%E7%BA%A7" aria-label="套餐升降级 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>套餐升降级</h3>
+<ul>
+<li>支持将 Lite 套餐升级至 Pro 套餐，升级费用按剩余天数折算差价。升级后，当月剩余时间的可用额度将在原有剩余额度的基础上按比例增加。</li>
+<li>不支持从 Pro 套餐降级至 Lite 套餐。如需使用 Lite 套餐，需等待当前 Pro 套餐到期后重新购买 Lite 套餐。</li>
+</ul>
+<h2 id="专属错误码"><a href="#%E4%B8%93%E5%B1%9E%E9%94%99%E8%AF%AF%E7%A0%81" aria-label="专属错误码 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>专属错误码</h2>
+<style>
+.error-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+  font-size: 14px;
+}
+
+.error-table th,
+.error-table td {
+  border: 1px solid #e5e6eb;
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.error-table th {
+  background: #f7f8fa;
+  font-weight: 600;
+}
+
+/* 控制列宽 */
+.col-status { width: 90px; }
+.col-type { width: 160px; }
+.col-code { width: 260px; }
+.col-msg { width: 260px; }
+.col-desc { width: auto; }
+
+.code {
+  font-family: Menlo, Monaco, Consolas, monospace;
+  background: #f2f3f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+</style>
+<table class="error-table">
+  <thead>
+    <tr>
+      <th class="col-status">HTTP状态码</th>
+      <th class="col-type">类型</th>
+      <th class="col-code">错误码</th>
+      <th class="col-msg">错误信息</th>
+      <th class="col-desc">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>403</td>
+      <td>access_denied</td>
+      <td><span class="code">coding_plan_not_subscribed</span></td>
+      <td>Coding Plan subscription is missing</td>
+      <td>当前账号未订阅 Coding Plan 套餐，如需使用请前往控制台完成订阅。</td>
+    </tr>
+    <tr>
+      <td>403</td>
+      <td>access_denied</td>
+      <td><span class="code">coding_plan_subscription_expired</span></td>
+      <td>Coding Plan subscription is expired</td>
+      <td>当前账号 Coding Plan 套餐已过期，如需使用请前往控制台完成续费。</td>
+    </tr>
+    <tr>
+      <td>429</td>
+      <td>quota_exceeded</td>
+      <td><span class="code">coding_plan_hour_quota_exceeded</span></td>
+      <td>Coding Plan hour quota has been exceeded</td>
+      <td>当前账号的 Coding Plan 5 小时调用额度已用尽，请等待额度刷新或升级套餐。</td>
+    </tr>
+    <tr>
+      <td>429</td>
+      <td>quota_exceeded</td>
+      <td><span class="code">coding_plan_week_quota_exceeded</span></td>
+      <td>Coding Plan week quota has been exceeded</td>
+      <td>当前账号的 Coding Plan 周限额已用尽，请等待额度刷新或升级套餐。</td>
+    </tr>
+    <tr>
+      <td>429</td>
+      <td>quota_exceeded</td>
+      <td><span class="code">coding_plan_month_quota_exceeded</span></td>
+      <td>Coding Plan month quota has been exceeded</td>
+      <td>当前账号的 Coding Plan 月限额已用尽，请等待额度刷新或升级套餐。</td>
+    </tr>
+    <tr>
+      <td>403</td>
+      <td>access_denied</td>
+      <td><span class="code">coding_plan_model_not_supported</span></td>
+      <td>The current model does not support Coding Plan</td>
+      <td>当前模型不支持 Coding Plan，请切换至支持 Coding Plan 的模型后重试。</td>
+    </tr>
+    <tr>
+      <td>429</td>
+      <td>rate_limit_exceeded</td>
+      <td><span class="code">coding_plan_rate_limit_exceeded</span></td>
+      <td>Coding Plan request rate limit exceeded</td>
+      <td>Coding Plan 套餐请求频率过高，请稍后再试。</td>
+    </tr>
+    <tr>
+      <td>401</td>
+      <td>invalid_request_error</td>
+      <td><span class="code">coding_plan_api_key_required</span></td>
+      <td>Coding Plan requires a dedicated API key</td>
+      <td>当前请求未使用 Coding Plan 专属 API Key，仅可使用专属 API Key 调用 Coding Plan 套餐。</td>
+    </tr>
+    <tr>
+      <td>401</td>
+      <td>invalid_request_error</td>
+      <td><span class="code">coding_plan_api_key_not_allowed</span></td>
+      <td>Coding Plan API key is not allowed for non-Coding Plan requests</td>
+      <td>当前使用的 Coding Plan 专属 API Key 无法调用非 Coding Plan 套餐相关接口。</td>
+    </tr>
+  </tbody>
+</table>
+<h2 id="qa"><a href="#qa" aria-label="qa permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Q&#x26;A</h2>
+<h3 id="1常见报错问题解答"><a href="#1%E5%B8%B8%E8%A7%81%E6%8A%A5%E9%94%99%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94" aria-label="1常见报错问题解答 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1.常见报错问题解答</h3>
+<h4 id="问题一：400-invalid-content-typeimage_url-is-only-suppoby-certain-models"><a href="#%E9%97%AE%E9%A2%98%E4%B8%80%EF%BC%9A400-invalid-content-typeimage_url-is-only-suppoby-certain-models" aria-label="问题一：400 invalid content typeimage_url is only suppoby certain models permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>问题一：<code>400 Invalid content type.image_url is only suppoby certain models</code></h4>
+<p>答： 您好，使用 Coding Plan 报错 400 <code>Invalid content type.image_url is only supported by certain models</code>，通常是由于您使用 Coding Plan 的过程中尝试让模型识别解析上下文中的图片、视频等多模态内容，但目前 Coding Plan 中模型暂未支持图像理解能力导致。</p>
+<p>关于 Coding Plan 中模型支持多模态信息的功能我们正高优开发中，后续会支持，您可以关注官方文档更新情况：<a href="https://cloud.baidu.com/doc/qianfan/s/imlg0beiu" target="_blank" rel="nofollow noopener noreferrer">Coding Plan文档</a></p>
+<h4 id="问题二：400-message-format-error-index5-should-be-tool-but-is-assistant"><a href="#%E9%97%AE%E9%A2%98%E4%BA%8C%EF%BC%9A400-message-format-error-index5-should-be-tool-but-is-assistant" aria-label="问题二：400 message format error index5 should be tool but is assistant permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>问题二：<code>400 Message format error, index[5] should be [tool] but is [assistant]</code></h4>
+<p>答： 您好，使用 Coding Plan 报错 400 <code>Message format error, index[5] should be [tool] but is [assistant]</code>，说明 <code>messages</code> 数组中的 role block 顺序不符合接口协议导致。</p>
+<p>通常有以下原因：</p>
+<ul>
+<li>三方工具拼接错误： 如果您使用的第三方工具接入 Coding Plan 后产生的报错，一般是由于第三方工具内部逻辑错误导致上下文拼接错误，您可以自行查看三方工具日志或者网络抓包分析错误原因；</li>
+<li>Session 未清空： 或者您也可以排查下，是否是由于您先使用的第三方模型，然后在未清空 session 的情况下切换至 Coding Plan 继续调用，该类情况需要您清空当前会话内容，或重启第三方工具后再重试。</li>
+</ul>
+<p>您可以参考 API 接口文档中关于 <code>messages</code> 的 role block 协议顺序要求对比下您的输入情况：<a href="https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb" target="_blank" rel="nofollow noopener noreferrer">文本生成接口文档</a>。如果是 function call 执行 tool 相关的报错，您可以参考：<a href="https://cloud.baidu.com/doc/qianfan-docs/s/xm95lyys5#%E7%AC%AC%E4%BA%BA%E8%BD%BD%E8%BD%AE%E8%BD%AE" target="_blank" rel="nofollow noopener noreferrer">Function calling 接口文档</a> 中的 role block 顺序。</p>
+<h4 id="问题三：401-coding-plan-api-key-is-not-allowed-for-non-coding-plan-requests"><a href="#%E9%97%AE%E9%A2%98%E4%B8%89%EF%BC%9A401-coding-plan-api-key-is-not-allowed-for-non-coding-plan-requests" aria-label="问题三：401 coding plan api key is not allowed for non coding plan requests permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>问题三：<code>401 Coding Plan API key is not allowed for non-Coding Plan requests</code></h4>
+<p>答： 您好，如果在出现该报错，通常是您的 <strong>Base Url</strong> 填写错误导致。请检查工具配置中的 Base Url 是否正确：</p>
+<ul>
+<li>兼容 OpenAI 接口协议：<code>https://qianfan.baidubce.com/v2/coding</code></li>
+<li>兼容 Anthropic 接口协议：<code>https://qianfan.baidubce.com/anthropic/coding</code></li>
+</ul>
+<p>更多配置信息及第三方工具支持方案，请参考官方文档：<a href="https://cloud.baidu.com/doc/qianfan/s/imlg0beiu" target="_blank" rel="nofollow noopener noreferrer">配置方案说明</a></p>
+<h4 id="问题四：401-the-model-does-not-exist-or-you-do-not-have-access-to-it"><a href="#%E9%97%AE%E9%A2%98%E5%9B%9B%EF%BC%9A401-the-model-does-not-exist-or-you-do-not-have-access-to-it" aria-label="问题四：401 the model does not exist or you do not have access to it permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>问题四：<code>401 The model does not exist or you do not have access to it</code></h4>
+<p>答：该问题一般是由于您使用 Coding Plan 时配置的 <strong>模型 ID</strong> 错误导致。</p>
+<p>解决方案：请在工具的模型配置部分，核对模型名称与文档中的 <strong>model 参数接入点 ID</strong> 是否一致。修改一致后，重启工具重试即可。</p>
+<div class="qr-img">
+    <img src="https://bce.bdstatic.com/doc/bce-doc/qianfan/77e1e1b9f8e0b48761d14c81b176936b_77e1e1b.png" alt="模型接入点ID示例">
+</div>
+<p>参考文档：<a href="https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j" target="_blank" rel="nofollow noopener noreferrer">模型列表</a></p>
+<h4 id="问题五：429-api-rate-limit-reached--the-current-model-is-experiencing-high-demand"><a href="#%E9%97%AE%E9%A2%98%E4%BA%94%EF%BC%9A429-api-rate-limit-reached--the-current-model-is-experiencing-high-demand" aria-label="问题五：429 api rate limit reached  the current model is experiencing high demand permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>问题五：<code>429 API rate limit reached / The current model is experiencing high demand</code></h4>
+<p>答： 该报错（包含 <code>coding_plan_cluster_rate_limited</code> 等）通常是由于当前接口调用触发了平台<strong>限流保护策略</strong>。近期由于订阅用户量激增，部分高峰时段可能会出现请求排队或限流。</p>
+<p>建议优化方案：</p>
+<ul>
+<li>避开高峰时段：错峰使用通常可获得更稳定的体验；</li>
+<li>切换模型：根据需要切换至其他可用模型或 auto 模式，Coding Plan 支持多种主流模型灵活切换；</li>
+<li>降低频率：适当降低短时间内的调用频率，以避免触发系统限流机制。</li>
+</ul>
+<p>详情请参见官方公告：<a href="https://cloud.baidu.com/news/notice_a8ce81e0-4400-4c59-9513-c0db841b0782" target="_blank" rel="nofollow noopener noreferrer">服务策略调整公告</a></p>
+<h3 id="3-回答异常问题解答"><a href="#3-%E5%9B%9E%E7%AD%94%E5%BC%82%E5%B8%B8%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94" aria-label="3 回答异常问题解答 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. 回答异常问题解答</h3>
+<h4 id="问题：coding-plan模型回答：作为一个人工智能语言模型，我还没学习如何回答这个问题，您可以向我问一些其它的问题，我会尽力帮您解决的。"><a href="#%E9%97%AE%E9%A2%98%EF%BC%9Acoding-plan%E6%A8%A1%E5%9E%8B%E5%9B%9E%E7%AD%94%EF%BC%9A%E4%BD%9C%E4%B8%BA%E4%B8%80%E4%B8%AA%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%EF%BC%8C%E6%88%91%E8%BF%98%E6%B2%A1%E5%AD%A6%E4%B9%A0%E5%A6%82%E4%BD%95%E5%9B%9E%E7%AD%94%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98%EF%BC%8C%E6%82%A8%E5%8F%AF%E4%BB%A5%E5%90%91%E6%88%91%E9%97%AE%E4%B8%80%E4%BA%9B%E5%85%B6%E5%AE%83%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%8C%E6%88%91%E4%BC%9A%E5%B0%BD%E5%8A%9B%E5%B8%AE%E6%82%A8%E8%A7%A3%E5%86%B3%E7%9A%84%E3%80%82" aria-label="问题：coding plan模型回答：作为一个人工智能语言模型，我还没学习如何回答这个问题，您可以向我问一些其它的问题，我会尽力帮您解决的。 permalink" class="anchor"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>问题：Coding Plan模型回答：“作为一个人工智能语言模型，我还没学习如何回答这个问题，您可以向我问一些其它的问题，我会尽力帮您解决的。”</h4>
+<p>答：您好，当您使用 Coding Plan 时如果模型出现上述回答，一般是由于您的输入或模型输出中包含了涉敏内容，触发了大模型的安全算子并进行拦截，兜底返回了该内容。</p>
+<p>您可以尝试通过以下方式检查和恢复：</p>
+<p>（1）清空当前会话上下文内容： 根据您使用的第三方工具不同，清空会话内容的方式也不同。例如：</p>
+<ul>
+<li>
+<p><strong>OpenClaw</strong> 需要在其控制台页面输入框中输入 <code>/reset</code></p>
+<p><img src="https://bce.bdstatic.com/doc/bce-doc/qianfan/97e0c946be166d8276113c9214c7832e_97e0c94.png" alt="OpenClaw清空会话命令"></p>
+</li>
+<li><strong>Claude Code CLI</strong> 需要在输入框输入 <code>/clear</code>
+<img src="https://bce.bdstatic.com/doc/bce-doc/qianfan/a60c2f932d82ce22be3dd0c23dc56a7c_a60c2f9.png" alt="Claude Code清空会话命令"></li>
+</ul>
+<p>（2）排查本地文件中的敏感词汇：如果清空上下文后依然存在该问题，您可以查看第三方工具的各种 md 文件（如 OpenClaw 的 <code>SOUL.md</code>、<code>USER.md</code>）或记忆文件中是否包含有敏感词汇或内容，若有请删除后重启工具再使用。</p></div><div id="post__special-keyword-modal" class="post__special-keyword-modal" style="left:0;top:0;display:none"><p class="post__keyword-content"></p><p><a class="post__keyword-jump" target="_blank" rel="norefrence" data-track-category="qianfan文档详情页"></a></p><span class="post__keyword-bar"></span></div><div class="feedback-toc-wrapper"><div class="feedback-toc feedback-toc-visible"><div class="feedback-toc-title"><span class="line-left"></span><p class="txt">评价此篇文章</p><span class="line-right"></span></div><div class="feedback-toc-button-wrapper"><span class="button helpful">有帮助</span><span class="button not-helpful">没帮助</span></div></div></div><div class="image-viewer hide"><div class="close-button"><svg viewBox="0 0 40 40"><path d="M10,10 L30,30 M30,10 L10,30"></path></svg></div><img src="" style="left:0px;top:0px;width:0;height:0;max-width:0;max-heigth:0"/></div></div><div class="post-turner-wrapper"><a class="post-turner post-turner--prev" href="/doc/qianfan/s/Cmszilkmx"><div class="post-turner__desc">上一篇</div><div class="post-turner__link">Token Plan 企业版</div></a><a class="post-turner post-turner--next" href="/doc/qianfan/s/Rmn2ms2nm"><div class="post-turner__desc">下一篇</div><div class="post-turner__link">接入AI工具</div></a></div></div></div></div><div class="feedback-wrapper"><div><div id="legacy-feedback" style="display:none"><div class="feedback-right"><button class="feedback-chatbot"><i></i><span>文档</span><span>助手</span></button><hr/><button class="feedback-feedback"><svg width="1em" height="1em" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-1749, -709)"><g transform="translate(1734, 592)"><g transform="translate(15, 117)"><rect x="0" y="0" width="20" height="20"></rect><g transform="translate(2, 2.5)" stroke="currentColor" stroke-linejoin="round" stroke-width="1.4"><polygon points="6.85714286 12.6599679 6.85714286 15 9.24643265 15 16 8.34903214 13.6147265 6"></polygon><path d="M13.3333333,3.52941176 L13.3333333,0 L0,0 L0,15 L4.44444444,15 M3.55555556,7.05882353 L5.33333333,7.05882353 M3.55555556,4.41176471 L8.88888889,4.41176471" stroke-linecap="round"></path></g></g></g></g></g></svg><span>文档</span><span>反馈</span></button></div><div class="scroll-top"><svg width="1em" height="1em" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-1749, -808)"><g transform="translate(1734, 793)"><g transform="translate(15, 15)"><rect x="0" y="0" width="20" height="20"></rect><g transform="translate(4.5, 2)" stroke="currentColor" stroke-linecap="round" stroke-width="1.4"><line x1="5.50380417" y1="3.7701157" x2="5.50380417" y2="16"></line><polyline stroke-linejoin="round" points="0 8.98627675 5.5 3.72601719 11 8.98627675"></polyline><line x1="0" y1="0.219177482" x2="11" y2="0.219177482"></line></g></g></g></g></g></svg></div></div></div></div></div></div></div>

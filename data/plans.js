@@ -1,0 +1,3002 @@
+/* 自动生成，请勿手工编辑 —— 源文件: codingplan/data/plans.json
+ * 生成命令: node codingplan/scripts/build-data-module.js
+ * 生成时间: 2026-09-28T10:46:04.515Z
+ */
+window.__PLANS__ = {
+  "meta": {
+    "schema_version": "1.2.0",
+    "dataset": "国内 AI Coding Plan 价格数据集",
+    "snapshot_date": "2026-09-28",
+    "currency": "CNY",
+    "source": "https://codingplanhub.cn/ （人工整理转写，字段结构为自行设计）",
+    "counts": {
+      "vendors": 17,
+      "plans": 21,
+      "tiers": 68,
+      "with_free_tier": 2
+    },
+    "field_convention": "可选维度（agent_concurrency / context_window / derived 等）缺失即表示该厂商未公开此信息，不要臆造默认值。price_list_cny 表示官网标价（原价），仅在官网同时展示原价与优惠价时才有；price_currency / price_foreign 仅在外币定价时出现，表示官网原币金额，此时 price_cny 是汇率估算值而非官网数字。采集配置里的价格换算只允许「单位换算」（页面上写明单位，如季度价 ÷3）；凡是页面上没有的数字，一律不得用系数凑成一致 —— 那会把假设伪装成实测。purchase 描述「新用户能不能买到」，与价格无关，缺失即表示**未核实**（不等于在售）；status 取 on_sale/limited/closed_new/login_only/unverifiable，非 on_sale 必须带 as_of（否则会把历史状态当现状），evidence 区分一手（厂商官网原文）与二手（媒体转引）。",
+    "estimation_rules": {
+      "tokens_per_request": 8000,
+      "request_windows_per_day": 5,
+      "days_per_month": 30,
+      "note": "各厂商计费口径不统一（Token / 请求次数 / 积分 / Agent 额度），derived 中的估算值统一按上述假设折算，仅用于横向排序参考，不可作为购买依据。"
+    },
+    "disclaimer": "价格与优惠随时可能变动，所有数据以厂商官网为准。本站仅做聚合对比，不参与销售。",
+    "changelog": [
+      {
+        "date": "2026-09-28",
+        "version": "1.2.0",
+        "changes": [
+          "结构新增：为套餐增加可选字段 purchase（可购买性），status 五态 + as_of + evidence + source + note",
+          "已核实并写入 5 条：千帆 Coding Plan = 停止新购（2026-07-13 起，一手公告）、千帆 Token Plan = 在售（同日全面开放购买）、阿里百炼 Coding Plan = 限量抢购（Coding Plan Lite 已于 2026-03-20 停止新购）、Kimi = 暂停 C 端新订阅（2026-07-19，二手转引）、快手 KwaiKAT = 无法核实（官方营销页 404、无公开定价页）",
+          "kwaikat-coding-plan.buy_url 由已 404 的 /marketing/coding-plan 改指官方万擎产品页 /product/wanqing",
+          "修正上一版结论：千帆 Coding Plan 与 Token Plan **不是并行在售**，实为「停售 + 替代」"
+        ],
+        "evidence": "一手：百度智能云《Token Plan个人版上线及Coding Plan停售公告》https://cloud.baidu.com/doc/qianfan/s/Fmrexuejc （更新于 2026-07-10）；阿里云《Token Plan 概述》https://help.aliyun.com/zh/model-studio/token-plan-overview （更新于 2026-09-22）；快手站点地图与页面实测（2026-09-28）。二手：Kimi 公告经新华财经等媒体转引 https://www.cnfin.com/gs-lb/detail/20260720/4442734_1.html 。",
+        "note": "新增可选字段，老读取端不受影响；缺失态必须由读取端显示为「未核实」，不许默认按在售处理。schema_version 由 1.1.0 升至 1.2.0（结构变更）。其余 16 个套餐保持缺失，待逐一核实后再写。"
+      },
+      {
+        "date": "2026-09-28",
+        "version": "1.1.3",
+        "changes": [
+          "新增套餐「千帆 Token Plan 个人版」（4 档 Mini/Lite/Pro/Max，¥9.9/40/200/600）",
+          "明确它与千帆 Coding Plan 是并行在售的两条产品线，不可互相替代或合并比对"
+        ],
+        "evidence": "2026-09-28 静态抓取 https://cloud.baidu.com/product/codingplan.html 的卡片 JSON：Token 制四档 deletePrice 9.9/40/200/600，额度 1000 万/4200 万/2.3 亿/7 亿 Tokens 每月；页面 <title> 为「百度千帆Token Plan个人版」，页内自述「完全取消 Coding Plan 原有的三层限流体系」。Coding Plan 另在官方文档页 https://cloud.baidu.com/doc/qianfan/s/imlg0beiu 保持 ¥40/¥200 原样。",
+        "note": "只新增数据、不改结构，schema_version 仍为 1.1.0，故 changelog 记 1.1.3。models / tools 故意留空：官网未公布总数。"
+      },
+      {
+        "date": "2026-09-28",
+        "version": "1.1.2",
+        "changes": [
+          "Cursor Pro+ / Ultra 补录官方美元标价（$60 / $200），撤销「未核实」状态",
+          "新增 jsonld 提取策略：读页面内嵌的 schema.org Offer 结构化报价（Cursor 是首个用户）"
+        ],
+        "evidence": "2026-09-28 静态抓取 cursor.com/cn/pricing，页面内 schema.org Offer 数组：Hobby $0 / Pro $20 / Pro+ $60 / Ultra $200 / Teams $40",
+        "note": "只改数据、不改结构，schema_version 仍为 1.1.0，故 changelog 记 1.1.2"
+      },
+      {
+        "date": "2026-09-28",
+        "version": "1.1.1",
+        "changes": [
+          "MiniMax 价格由 ¥44.1/107.1/422.1 修正为官网标价 ¥49/119/469（撤销未经验证的「9 折」换算）",
+          "MiniMax 取消 price_list_cny（官网无原价展示，也就没有原价字段）",
+          "MiniMax quota.raw 由「官网未公开 Token 总量」改为官网原文「月度约 6/18/71 亿+ Token」"
+        ],
+        "evidence": "2026-09-28 浏览器渲染实测 + 页面交互探测（scripts/collect/probe-actions.js --click）",
+        "note": "本次只改数据、不改结构，schema_version 仍为 1.1.0，故 changelog 记 1.1.1"
+      },
+      {
+        "date": "2026-09-28",
+        "version": "1.1.0",
+        "changes": [
+          "Kimi 档位名由音乐术语（Andante/Moderato/Allegretto/Allegro）改回官网名称（Go/Plus/Pro/Max）",
+          "摩尔线程 quota.raw 由备注修正为官网的倍数关系描述，并补记季度价原值",
+          "智谱补录月付原价 ¥118/538/1078，MiniMax 补录月标价 ¥49/119/469（此前仅记录折后价）",
+          "Cursor / OpenCode 标注为美元定价（$20 / $10），人民币值注明为汇率估算"
+        ],
+        "evidence": "来源为 2026-09-28 浏览器渲染实测（scripts/collect/probe-render.js 产物）"
+      }
+    ]
+  },
+  "billing_types": [
+    {
+      "key": "token",
+      "label": "Token 计费",
+      "unit_label": "Token",
+      "comparable": true,
+      "note": "按月给定额度，与用量线性相关"
+    },
+    {
+      "key": "requests",
+      "label": "按请求次数",
+      "unit_label": "次",
+      "comparable": true,
+      "note": "通常有 5 小时/周/月三重限流窗口，实际可用量受窗口约束"
+    },
+    {
+      "key": "credits",
+      "label": "积分 / Credits",
+      "unit_label": "积分",
+      "comparable": false,
+      "note": "积分与 Token 的换算比例由厂商定义，跨厂商不可直接比较"
+    },
+    {
+      "key": "agent_quota",
+      "label": "Agent 额度",
+      "unit_label": "额度值",
+      "comparable": false,
+      "note": "按 Agent 任务（燃料值/任务额度）计费，与对话轮次弱相关"
+    },
+    {
+      "key": "subscription",
+      "label": "固定订阅",
+      "unit_label": "月",
+      "comparable": false,
+      "note": "工具席位制，不公开额度，按功能与并发区分档位"
+    }
+  ],
+  "use_cases": [
+    {
+      "key": "try",
+      "label": "个人开发者尝鲜",
+      "level": 1
+    },
+    {
+      "key": "light",
+      "label": "学生党友好",
+      "level": 2
+    },
+    {
+      "key": "daily",
+      "label": "日常主力开发",
+      "level": 3
+    },
+    {
+      "key": "heavy",
+      "label": "复杂项目 / 代码重构",
+      "level": 4
+    },
+    {
+      "key": "team",
+      "label": "团队协作 / 企业级",
+      "level": 5
+    }
+  ],
+  "vendors": [
+    {
+      "id": "bytedance",
+      "name": "字节跳动",
+      "short": "字节",
+      "logo_text": "字",
+      "color": "#378ADD",
+      "official_url": "https://www.volcengine.com/"
+    },
+    {
+      "id": "kuaishou",
+      "name": "快手",
+      "short": "快手",
+      "logo_text": "快",
+      "color": "#D85A30",
+      "official_url": "https://www.streamlake.com/"
+    },
+    {
+      "id": "mthreads",
+      "name": "摩尔线程",
+      "short": "摩尔",
+      "logo_text": "摩",
+      "color": "#0F6E56",
+      "official_url": "https://code.mthreads.com/"
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "short": "Cursor",
+      "logo_text": "C",
+      "color": "#2C2C2A",
+      "official_url": "https://cursor.com/cn/pricing"
+    },
+    {
+      "id": "unicom-cloud",
+      "name": "联通云",
+      "short": "联通",
+      "logo_text": "联",
+      "color": "#A32D2D",
+      "official_url": "https://www.cucloud.cn/"
+    },
+    {
+      "id": "jdcloud",
+      "name": "京东云",
+      "short": "京东",
+      "logo_text": "京",
+      "color": "#993C1D",
+      "official_url": "https://www.jdcloud.com/"
+    },
+    {
+      "id": "tencent-cloud",
+      "name": "腾讯云",
+      "short": "腾讯",
+      "logo_text": "腾",
+      "color": "#185FA5",
+      "official_url": "https://cloud.tencent.com/"
+    },
+    {
+      "id": "xiaomi",
+      "name": "小米",
+      "short": "小米",
+      "logo_text": "米",
+      "color": "#EF9F27",
+      "official_url": "https://platform.xiaomimimo.com/"
+    },
+    {
+      "id": "aliyun",
+      "name": "阿里云",
+      "short": "阿里",
+      "logo_text": "阿",
+      "color": "#BA7517",
+      "official_url": "https://www.aliyun.com/"
+    },
+    {
+      "id": "iflytek",
+      "name": "科大讯飞",
+      "short": "科大讯飞",
+      "logo_text": "讯",
+      "color": "#534AB7",
+      "official_url": "https://maas.xfyun.cn/"
+    },
+    {
+      "id": "moonshot",
+      "name": "月之暗面",
+      "short": "月之暗面",
+      "logo_text": "月",
+      "color": "#26215C",
+      "official_url": "https://www.kimi.com/"
+    },
+    {
+      "id": "baidu",
+      "name": "百度",
+      "short": "百度",
+      "logo_text": "百",
+      "color": "#0C447C",
+      "official_url": "https://cloud.baidu.com/"
+    },
+    {
+      "id": "minimax",
+      "name": "MiniMax",
+      "short": "MiniMax",
+      "logo_text": "M",
+      "color": "#1D9E75",
+      "official_url": "https://platform.minimaxi.com/"
+    },
+    {
+      "id": "ucloud",
+      "name": "优刻得 UCloud",
+      "short": "UCloud",
+      "logo_text": "U",
+      "color": "#7F77DD",
+      "official_url": "https://console.compshare.cn/"
+    },
+    {
+      "id": "huawei-cloud",
+      "name": "华为云",
+      "short": "华为",
+      "logo_text": "华",
+      "color": "#D4537E",
+      "official_url": "https://www.huaweicloud.com/"
+    },
+    {
+      "id": "anomaly",
+      "name": "Anomaly",
+      "short": "Anomaly",
+      "logo_text": "A",
+      "color": "#5F5E5A",
+      "official_url": "https://opencode.ai/go"
+    },
+    {
+      "id": "zhipu",
+      "name": "智谱华章",
+      "short": "智谱",
+      "logo_text": "智",
+      "color": "#639922",
+      "official_url": "https://www.bigmodel.cn/glm-coding"
+    }
+  ],
+  "plans": [
+    {
+      "id": "volcengine-agent-plan",
+      "vendor_id": "bytedance",
+      "name": "火山方舟 Agent Plan",
+      "billing_type": "agent_quota",
+      "buy_url": "https://www.volcengine.com/activity/agentplan",
+      "badges": [
+        "热门"
+      ],
+      "has_free_tier": false,
+      "min_price_cny": 9.9,
+      "positioning": "字节跳动出品，¥9.9 起，含 GLM-5.3 等 12 模型；档位丰富（4 档），从体验到旗舰全覆盖，个人开发者性价比之选。",
+      "models": {
+        "count": 12,
+        "partial": true,
+        "listed": [
+          "Doubao-Seed-2.0-pro",
+          "GLM-5.3",
+          "Kimi-K2.7"
+        ]
+      },
+      "tools": {
+        "count": 6,
+        "partial": true,
+        "listed": [
+          "Hermes Agent",
+          "OpenClaw",
+          "Claude Code"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "volcengine-agent-plan-small",
+          "name": "Small",
+          "price_cny": 9.9,
+          "price_display": "¥9.90/月",
+          "price_note": "2.5 折起",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "每月 20,000 Agent 燃料值",
+            "unit_key": "fuel",
+            "value": 20000,
+            "window": "month"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "可调用 12 个 AI 模型",
+            "2.5 折起限时优惠"
+          ],
+          "promo": "2.5折起",
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 9.9
+            }
+          ]
+        },
+        {
+          "id": "volcengine-agent-plan-medium",
+          "name": "Medium",
+          "price_cny": 49.9,
+          "price_display": "¥49.90/月",
+          "price_note": "2.5 折起",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "日常高频额度 5× Small 用量（约 100,000 燃料值）",
+            "unit_key": "fuel",
+            "value": 100000,
+            "window": "month",
+            "multiplier": 5,
+            "derived": true
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "免费赠送 ArkClaw 轻量版",
+            "日常高频额度 5× Small 用量",
+            "多模态及联网搜索 Harness 升级"
+          ],
+          "promo": "2.5折起",
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 49.9
+            }
+          ]
+        },
+        {
+          "id": "volcengine-agent-plan-large",
+          "name": "Large",
+          "price_cny": 500,
+          "price_display": "¥500/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "复杂重度开发 12.5× Small 用量（约 250,000 燃料值）",
+            "unit_key": "fuel",
+            "value": 250000,
+            "window": "month",
+            "multiplier": 12.5,
+            "derived": true
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "免费赠送 ArkClaw 轻量版",
+            "复杂重度开发 12.5× Small 用量",
+            "高阶多模态及联网搜索 Harness"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 500
+            }
+          ]
+        },
+        {
+          "id": "volcengine-agent-plan-max",
+          "name": "Max",
+          "price_cny": 1000,
+          "price_display": "¥1000/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "企业级额度（未公开具体数值）",
+            "unit_key": "fuel"
+          },
+          "use_case": "团队协作 / 企业级",
+          "highlights": [
+            "免费赠送 ArkClaw 轻量版",
+            "支持 6 款主流编程工具"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 1000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kwaikat-coding-plan",
+      "vendor_id": "kuaishou",
+      "name": "KwaiKAT Coding Plan",
+      "billing_type": "requests",
+      "buy_url": "https://www.streamlake.com/product/wanqing",
+      "badges": [
+        "热门"
+      ],
+      "has_free_tier": false,
+      "min_price_cny": 29,
+      "positioning": "快手出品，¥29 起，含 KAT-Coder-Pro V2 等 2 模型；4 档覆盖从尝鲜到重度。",
+      "models": {
+        "count": 2,
+        "partial": true,
+        "listed": [
+          "KAT-Coder-Pro V1",
+          "KAT-Coder-Pro V2"
+        ]
+      },
+      "tools": {
+        "count": 5,
+        "partial": true,
+        "listed": [
+          "OpenClaw",
+          "Cline",
+          "Roo Code"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "kwaikat-coding-plan-mini",
+          "name": "Mini",
+          "price_cny": 29,
+          "price_display": "¥29/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "40 Prompts / 5 小时",
+            "unit_key": "request",
+            "value": 40,
+            "window": "5h"
+          },
+          "derived": {
+            "quota_month": 6000,
+            "cost_per_unit": 0.004833,
+            "est_tokens_month": 48000000,
+            "cost_per_1m_tokens_est": 0.6042,
+            "confidence": "low"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "可调用 2 个 AI 模型"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 29
+            }
+          ]
+        },
+        {
+          "id": "kwaikat-coding-plan-starter",
+          "name": "Starter",
+          "price_cny": 70,
+          "price_display": "¥70/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "100 Prompts / 5 小时",
+            "unit_key": "request",
+            "value": 100,
+            "window": "5h"
+          },
+          "derived": {
+            "quota_month": 15000,
+            "cost_per_unit": 0.004667,
+            "est_tokens_month": 120000000,
+            "cost_per_1m_tokens_est": 0.5833,
+            "confidence": "low"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "支持 5 款主流编程工具"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 70
+            }
+          ]
+        },
+        {
+          "id": "kwaikat-coding-plan-pro",
+          "name": "Pro",
+          "price_cny": 140,
+          "price_display": "¥140/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "300 Prompts / 5 小时",
+            "unit_key": "request",
+            "value": 300,
+            "window": "5h",
+            "multiplier": 3,
+            "derived": true
+          },
+          "derived": {
+            "quota_month": 45000,
+            "cost_per_unit": 0.003111,
+            "est_tokens_month": 360000000,
+            "cost_per_1m_tokens_est": 0.3889,
+            "confidence": "low"
+          },
+          "use_case": "团队协作 / 企业级",
+          "highlights": [
+            "Starter 套餐用量的 3 倍"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 140
+            }
+          ]
+        },
+        {
+          "id": "kwaikat-coding-plan-max",
+          "name": "Max",
+          "price_cny": 350,
+          "price_display": "¥350/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "1000 Prompts / 5 小时",
+            "unit_key": "request",
+            "value": 1000,
+            "window": "5h"
+          },
+          "derived": {
+            "quota_month": 150000,
+            "cost_per_unit": 0.002333,
+            "est_tokens_month": 1200000000,
+            "cost_per_1m_tokens_est": 0.2917,
+            "confidence": "low"
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "Pro 套餐用量的 3 倍以上"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 350
+            }
+          ]
+        }
+      ],
+      "purchase": {
+        "status": "unverifiable",
+        "as_of": "2026-09-28",
+        "evidence": "primary",
+        "source": "https://www.streamlake.com/product/wanqing",
+        "note": "自核（2026-09-28）：官方营销页 /marketing/coding-plan 及其四种变体（无 www / 尾斜杠 / 首字母大写 / 带查询参数）实测全部 404，且该路由已不在站点地图中（sitemap 426 条、lastmod 为当天）；官方万擎产品页的「热卖中」位至今仍链向这个死链。当前不存在公开定价页 —— 控制台为纯客户端空壳且需登录，万擎 66 篇文档全文无定价信息。故**无法核实**其当前可购买性（不等于已停售）。"
+      }
+    },
+    {
+      "id": "mthreads-ai-coding-plan",
+      "vendor_id": "mthreads",
+      "name": "摩尔线程 AI Coding Plan",
+      "billing_type": "subscription",
+      "buy_url": "https://code.mthreads.com/",
+      "badges": [
+        "有免费版"
+      ],
+      "has_free_tier": true,
+      "min_price_cny": 0,
+      "positioning": "摩尔线程官方提供，服务稳定；含免费档，适合先体验再决定，6 款工具兼容。",
+      "models": {
+        "count": 1,
+        "partial": true,
+        "listed": [
+          "GLM-4.7"
+        ]
+      },
+      "tools": {
+        "count": 6,
+        "partial": true,
+        "listed": [
+          "Claude Code",
+          "Cline",
+          "Cursor"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "mthreads-ai-coding-plan-free",
+          "name": "Free Trial",
+          "price_cny": 0,
+          "price_display": "免费/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "每日限量 100 名开发者；与 Lite Plan 套餐用量相当",
+            "unit_key": "seat"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "零成本体验",
+            "可调用 1 个 AI 模型",
+            "每日限量 100 名"
+          ],
+          "is_free": true,
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 0
+            }
+          ]
+        },
+        {
+          "id": "mthreads-ai-coding-plan-lite",
+          "name": "Lite Plan",
+          "price_cny": 40,
+          "price_display": "¥40/月",
+          "price_note": "季付 ¥120/季（月均 ¥40）",
+          "billing_period": "quarterly",
+          "quota": {
+            "raw": "Claude Pro 套餐的 3 倍用量",
+            "unit_key": "seat"
+          },
+          "use_case": "学生党友好",
+          "highlights": [
+            "支持 6 款主流编程工具"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 40
+            }
+          ]
+        },
+        {
+          "id": "mthreads-ai-coding-plan-pro",
+          "name": "Pro Plan",
+          "price_cny": 200,
+          "price_display": "¥200/月",
+          "price_note": "季付 ¥600/季（月均 ¥200）",
+          "billing_period": "quarterly",
+          "quota": {
+            "raw": "Lite Plan 的 5 倍用量",
+            "unit_key": "seat"
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "支持 6 款主流编程工具"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 200
+            }
+          ]
+        },
+        {
+          "id": "mthreads-ai-coding-plan-max",
+          "name": "Max Plan",
+          "price_cny": 400,
+          "price_display": "¥400/月",
+          "price_note": "季付 ¥1200/季（月均 ¥400）",
+          "billing_period": "quarterly",
+          "quota": {
+            "raw": "Pro Plan 的 4 倍用量",
+            "unit_key": "seat"
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "支持 6 款主流编程工具"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 400
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cursor-plan",
+      "vendor_id": "cursor",
+      "name": "Cursor Plan",
+      "billing_type": "subscription",
+      "buy_url": "https://cursor.com/cn/pricing",
+      "badges": [
+        "有免费版"
+      ],
+      "has_free_tier": true,
+      "min_price_cny": 0,
+      "positioning": "Cursor 官方套餐，支持 14 个模型；含免费档，Ultra 为智能体重度用户准备。",
+      "models": {
+        "count": 14,
+        "partial": true,
+        "listed": [
+          "Claude 4 Sonnet",
+          "Claude 4.5 Sonnet",
+          "Claude 4.5 Opus"
+        ]
+      },
+      "tools": {
+        "count": 1,
+        "partial": true,
+        "listed": [
+          "Cursor"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "cursor-plan-hobby",
+          "name": "Hobby",
+          "price_cny": 0,
+          "price_display": "免费/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "免费档，含基础智能体额度",
+            "unit_key": "seat"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "零成本体验",
+            "可调用 14 个 AI 模型"
+          ],
+          "is_free": true,
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 0
+            }
+          ]
+        },
+        {
+          "id": "cursor-plan-pro",
+          "name": "Pro",
+          "price_cny": 140,
+          "price_display": "¥140/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "标准智能体额度",
+            "unit_key": "seat"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "支持 1 款主流编程工具",
+            "固定月费订阅，预算可控"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 140
+            }
+          ],
+          "price_currency": "USD",
+          "price_foreign": 20,
+          "price_note": "官网 $20/月；¥140 为按 1:7 的估算值"
+        },
+        {
+          "id": "cursor-plan-pro-plus",
+          "name": "Pro+",
+          "price_cny": 420,
+          "price_display": "¥420/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "Pro 版智能体限额的 3 倍",
+            "unit_key": "seat",
+            "multiplier": 3,
+            "derived": true
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "建议日常使用智能体的用户选择"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 420
+            }
+          ],
+          "price_currency": "USD",
+          "price_foreign": 60,
+          "price_note": "官网 $60/月；¥420 为按 1:7 的估算值"
+        },
+        {
+          "id": "cursor-plan-ultra",
+          "name": "Ultra",
+          "price_cny": 1400,
+          "price_display": "¥1400/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "智能体限额为 Pro 套餐的 20 倍",
+            "unit_key": "seat",
+            "multiplier": 20,
+            "derived": true
+          },
+          "use_case": "团队协作 / 企业级",
+          "highlights": [
+            "推荐智能体重度用户选择"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 1400
+            }
+          ],
+          "price_currency": "USD",
+          "price_foreign": 200,
+          "price_note": "官网 $200/月；¥1400 为按 1:7 的估算值"
+        }
+      ],
+      "price_note": "官网以美元标价（Hobby 免费 / Pro $20 / Pro+ $60 / Ultra $200 每月）。这些数字取自页面内嵌的 schema.org 结构化数据，无需点 tab 即可读到；本库人民币值按 1:7 估算，仅供横向参考。另有 Teams 版 $40/user/月，属另一条产品线，本站未建模。"
+    },
+    {
+      "id": "volcengine-coding-plan",
+      "vendor_id": "bytedance",
+      "name": "火山方舟 Coding Plan",
+      "billing_type": "requests",
+      "buy_url": "https://www.volcengine.com/activity/codingplan",
+      "badges": [
+        "热门"
+      ],
+      "has_free_tier": false,
+      "min_price_cny": 9.9,
+      "positioning": "¥9.9 起，火山方舟 Coding Plan，新增 Doubao-2.1-turbo；8 款工具兼容。",
+      "models": {
+        "count": 9,
+        "partial": true,
+        "listed": [
+          "Doubao-Seed-2.1-turbo",
+          "GLM-5.3",
+          "Kimi-K2.7"
+        ]
+      },
+      "tools": {
+        "count": 8,
+        "partial": true,
+        "listed": [
+          "Cline",
+          "OpenClaw",
+          "Claude Code"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "volcengine-coding-plan-lite",
+          "name": "Lite Plan",
+          "price_cny": 9.9,
+          "price_display": "¥9.90/月",
+          "price_note": "首月 ¥9.9",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "按请求次数计费（额度未公开）",
+            "unit_key": "request"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "可调用 8 个 AI 模型",
+            "首月 ¥9.9"
+          ],
+          "promo": "首月¥9.9",
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 9.9
+            }
+          ]
+        },
+        {
+          "id": "volcengine-coding-plan-pro",
+          "name": "Pro Plan",
+          "price_cny": 49.9,
+          "price_display": "¥49.90/月",
+          "price_note": "首月 ¥49.9",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "用量为 Lite 套餐 5 倍",
+            "unit_key": "request",
+            "multiplier": 5,
+            "derived": true
+          },
+          "use_case": "学生党友好",
+          "highlights": [
+            "用量为 Claude Max 数倍，Lite 套餐 5 倍",
+            "支持 8 款主流编程工具",
+            "首月 ¥49.9"
+          ],
+          "promo": "首月¥49.9",
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 49.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unicom-yuanjing-token-plan",
+      "vendor_id": "unicom-cloud",
+      "name": "联通元景 Token Plan",
+      "billing_type": "token",
+      "buy_url": "https://www.cucloud.cn/product/tokenplan.html",
+      "badges": [],
+      "has_free_tier": false,
+      "min_price_cny": 15,
+      "positioning": "联通云编程套餐，含 aisp-auto-route 等 3 模型，¥15 起，是目前月费最低的 Token 计费档位之一。",
+      "models": {
+        "count": 3,
+        "partial": true,
+        "listed": [
+          "aisp-auto-route",
+          "DeepSeek-V4-Flash",
+          "MiniMax-M2.5"
+        ]
+      },
+      "tools": {
+        "count": 1,
+        "partial": true,
+        "listed": [
+          "OpenClaw"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "unicom-yuanjing-token-plan-lite",
+          "name": "Lite",
+          "price_cny": 15,
+          "price_display": "¥15/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "600 万 Token / 月",
+            "unit_key": "token",
+            "value": 6000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 6000000,
+            "cost_per_unit": 0.0000025,
+            "est_tokens_month": 6000000,
+            "cost_per_1m_tokens_est": 2.5,
+            "confidence": "high"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "可调用 3 个 AI 模型"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 15
+            }
+          ]
+        },
+        {
+          "id": "unicom-yuanjing-token-plan-pro",
+          "name": "Pro",
+          "price_cny": 30,
+          "price_display": "¥30/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "1,200 万 Token / 月",
+            "unit_key": "token",
+            "value": 12000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 12000000,
+            "cost_per_unit": 0.0000025,
+            "est_tokens_month": 12000000,
+            "cost_per_1m_tokens_est": 2.5,
+            "confidence": "high"
+          },
+          "use_case": "学生党友好",
+          "highlights": [
+            "支持 1 款主流编程工具"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 30
+            }
+          ]
+        },
+        {
+          "id": "unicom-yuanjing-token-plan-max",
+          "name": "Max",
+          "price_cny": 45,
+          "price_display": "¥45/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "1,800 万 Token / 月",
+            "unit_key": "token",
+            "value": 18000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 18000000,
+            "cost_per_unit": 0.0000025,
+            "est_tokens_month": 18000000,
+            "cost_per_1m_tokens_est": 2.5,
+            "confidence": "high"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "支持 1 款主流编程工具"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 45
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jdcloud-coding-plan",
+      "vendor_id": "jdcloud",
+      "name": "京东云 Coding Plan",
+      "billing_type": "requests",
+      "buy_url": "https://www.jdcloud.com/cn/pages/codingplan",
+      "badges": [],
+      "has_free_tier": false,
+      "min_price_cny": 19.9,
+      "positioning": "京东云出品，¥19.9 起，含 DeepSeek 等 5 模型；需每天 10:30 抢购。",
+      "models": {
+        "count": 5,
+        "partial": true,
+        "listed": [
+          "DeepSeek",
+          "GLM",
+          "MiniMax"
+        ]
+      },
+      "tools": {
+        "count": 5,
+        "partial": true,
+        "listed": [
+          "Claude Code",
+          "OpenCode",
+          "Cursor"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "jdcloud-coding-plan-lite",
+          "name": "Coding Plan Lite",
+          "price_cny": 19.9,
+          "price_display": "¥19.90/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "每月最多 18,000 次请求",
+            "unit_key": "request",
+            "value": 18000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 18000,
+            "cost_per_unit": 0.001106,
+            "est_tokens_month": 144000000,
+            "cost_per_1m_tokens_est": 0.1382,
+            "confidence": "low"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "每天 10:30 开抢"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 19.9
+            }
+          ]
+        },
+        {
+          "id": "jdcloud-coding-plan-pro",
+          "name": "Coding Plan Pro",
+          "price_cny": 99.9,
+          "price_display": "¥99.90/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "每月最多 90,000 次请求",
+            "unit_key": "request",
+            "value": 90000,
+            "window": "month",
+            "multiplier": 5,
+            "derived": true
+          },
+          "derived": {
+            "quota_month": 90000,
+            "cost_per_unit": 0.00111,
+            "est_tokens_month": 720000000,
+            "cost_per_1m_tokens_est": 0.1388,
+            "confidence": "low"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "每天 10:30 开抢"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 99.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tencent-hy-token-plan",
+      "vendor_id": "tencent-cloud",
+      "name": "腾讯云 Hy Token Plan",
+      "billing_type": "token",
+      "buy_url": "https://cloud.tencent.com/act/pro/tokenplan",
+      "badges": [
+        "热门"
+      ],
+      "has_free_tier": false,
+      "min_price_cny": 28,
+      "positioning": "腾讯云出品，¥28 起，含 Hy3 preview-Coder 等 2 模型；13 款工具兼容，适合已在腾讯云生态的开发者。",
+      "models": {
+        "count": 2,
+        "partial": true,
+        "listed": [
+          "Hy3 preview-Coder",
+          "Hy3"
+        ]
+      },
+      "tools": {
+        "count": 13,
+        "partial": true,
+        "listed": [
+          "OpenClaw",
+          "AutoClaw",
+          "WorkBuddy"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "tencent-hy-token-plan-lite",
+          "name": "Lite 体验套餐",
+          "price_cny": 28,
+          "price_display": "¥28/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "3500 万 Token / 月",
+            "unit_key": "token",
+            "value": 35000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 35000000,
+            "cost_per_unit": 8e-7,
+            "est_tokens_month": 35000000,
+            "cost_per_1m_tokens_est": 0.8,
+            "confidence": "high"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "可调用 2 个 AI 模型"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 28
+            }
+          ]
+        },
+        {
+          "id": "tencent-hy-token-plan-standard",
+          "name": "Standard 基础套餐",
+          "price_cny": 78,
+          "price_display": "¥78/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "1 亿 Token / 月",
+            "unit_key": "token",
+            "value": 100000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 100000000,
+            "cost_per_unit": 7.8e-7,
+            "est_tokens_month": 100000000,
+            "cost_per_1m_tokens_est": 0.78,
+            "confidence": "high"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "支持 13 款主流编程工具"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 78
+            }
+          ]
+        },
+        {
+          "id": "tencent-hy-token-plan-pro",
+          "name": "Pro 进阶套餐",
+          "price_cny": 238,
+          "price_display": "¥238/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "3.2 亿 Token / 月",
+            "unit_key": "token",
+            "value": 320000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 320000000,
+            "cost_per_unit": 7.44e-7,
+            "est_tokens_month": 320000000,
+            "cost_per_1m_tokens_est": 0.7438,
+            "confidence": "high"
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "适合每天高频使用的开发者"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 238
+            }
+          ]
+        },
+        {
+          "id": "tencent-hy-token-plan-max",
+          "name": "Max 专业套餐",
+          "price_cny": 468,
+          "price_display": "¥468/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "6.5 亿 Token / 月",
+            "unit_key": "token",
+            "value": 650000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 650000000,
+            "cost_per_unit": 7.2e-7,
+            "est_tokens_month": 650000000,
+            "cost_per_1m_tokens_est": 0.72,
+            "confidence": "high"
+          },
+          "use_case": "团队协作 / 企业级",
+          "highlights": [
+            "支持 13 款主流编程工具"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 468
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xiaomi-mimo-token-plan",
+      "vendor_id": "xiaomi",
+      "name": "小米 MiMo Token Plan",
+      "billing_type": "credits",
+      "buy_url": "https://platform.xiaomimimo.com/console/plan-manage",
+      "badges": [
+        "热门"
+      ],
+      "has_free_tier": false,
+      "min_price_cny": 34.32,
+      "positioning": "小米出品，¥34.32 起，含 mimo-v2.5-pro 等 3 模型；11 款工具兼容，另有语音/图像多模态能力。",
+      "models": {
+        "count": 3,
+        "partial": true,
+        "listed": [
+          "mimo-v2.5-pro",
+          "mimo-v2.5",
+          "mimo-v2.5-asr"
+        ]
+      },
+      "tools": {
+        "count": 11,
+        "partial": true,
+        "listed": [
+          "MiMo Code",
+          "OpenCode",
+          "OpenClaw"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "xiaomi-mimo-token-plan-lite",
+          "name": "Lite 尝鲜入门",
+          "price_cny": 34.32,
+          "price_display": "¥34.32/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "4,100,000,000 Credits / 月",
+            "unit_key": "credit",
+            "value": 4100000000,
+            "window": "month"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "非高峰期（00:00-08:00）0.8x 系数消耗",
+            "TTS 系列模型限时免费使用"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 34.32
+            }
+          ]
+        },
+        {
+          "id": "xiaomi-mimo-token-plan-standard",
+          "name": "Standard 进阶用户",
+          "price_cny": 87.12,
+          "price_display": "¥87.12/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "11,000,000,000 Credits / 月",
+            "unit_key": "credit",
+            "value": 11000000000,
+            "window": "month",
+            "multiplier": 2.7,
+            "derived": true
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "2.7 倍 Lite 套餐用量",
+            "非高峰期 0.8x 系数消耗",
+            "TTS 系列模型限时免费使用"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 87.12
+            }
+          ]
+        },
+        {
+          "id": "xiaomi-mimo-token-plan-pro",
+          "name": "Pro 专业开发者",
+          "price_cny": 289.52,
+          "price_display": "¥289.52/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "38,000,000,000 Credits / 月",
+            "unit_key": "credit",
+            "value": 38000000000,
+            "window": "month",
+            "multiplier": 9.3,
+            "derived": true
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "9.3 倍 Lite 套餐用量",
+            "非高峰期 0.8x 系数消耗",
+            "TTS 系列模型限时免费使用"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 289.52
+            }
+          ]
+        },
+        {
+          "id": "xiaomi-mimo-token-plan-max",
+          "name": "Max 编程发烧友",
+          "price_cny": 579.92,
+          "price_display": "¥579.92/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "82,000,000,000 Credits / 月",
+            "unit_key": "credit",
+            "value": 82000000000,
+            "window": "month",
+            "multiplier": 20,
+            "derived": true
+          },
+          "use_case": "团队协作 / 企业级",
+          "highlights": [
+            "20 倍 Lite 套餐用量",
+            "非高峰期 0.8x 系数消耗",
+            "TTS 系列模型限时免费使用"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 579.92
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tencent-general-token-plan",
+      "vendor_id": "tencent-cloud",
+      "name": "腾讯云通用 Token Plan",
+      "billing_type": "token",
+      "buy_url": "https://cloud.tencent.com/act/pro/tokenplan",
+      "badges": [
+        "热门"
+      ],
+      "has_free_tier": false,
+      "min_price_cny": 39,
+      "positioning": "¥39 起，腾讯云通用 Token Plan，新增 Kimi-K3（100 万上下文）；适合日常主力开发。",
+      "models": {
+        "count": 5,
+        "partial": true,
+        "listed": [
+          "DeepSeek-V4",
+          "Kimi-K3",
+          "GLM-5.1"
+        ]
+      },
+      "tools": {
+        "count": 13,
+        "partial": true,
+        "listed": [
+          "OpenClaw",
+          "AutoClaw",
+          "WorkBuddy"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "tencent-general-token-plan-lite",
+          "name": "Lite 体验套餐",
+          "price_cny": 39,
+          "price_display": "¥39/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "3500 万 Token / 月",
+            "unit_key": "token",
+            "value": 35000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 35000000,
+            "cost_per_unit": 0.000001114,
+            "est_tokens_month": 35000000,
+            "cost_per_1m_tokens_est": 1.1143,
+            "confidence": "high"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "可调用 6 个 AI 模型"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 39
+            }
+          ]
+        },
+        {
+          "id": "tencent-general-token-plan-standard",
+          "name": "Standard 基础套餐",
+          "price_cny": 99,
+          "price_display": "¥99/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "1 亿 Token / 月",
+            "unit_key": "token",
+            "value": 100000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 100000000,
+            "cost_per_unit": 9.9e-7,
+            "est_tokens_month": 100000000,
+            "cost_per_1m_tokens_est": 0.99,
+            "confidence": "high"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "支持 13 款主流编程工具"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 99
+            }
+          ]
+        },
+        {
+          "id": "tencent-general-token-plan-pro",
+          "name": "Pro 进阶套餐",
+          "price_cny": 299,
+          "price_display": "¥299/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "3.2 亿 Token / 月",
+            "unit_key": "token",
+            "value": 320000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 320000000,
+            "cost_per_unit": 9.34e-7,
+            "est_tokens_month": 320000000,
+            "cost_per_1m_tokens_est": 0.9344,
+            "confidence": "high"
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "适合每天高频使用的开发者"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 299
+            }
+          ]
+        },
+        {
+          "id": "tencent-general-token-plan-max",
+          "name": "Max 专业套餐",
+          "price_cny": 599,
+          "price_display": "¥599/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "6.5 亿 Token / 月",
+            "unit_key": "token",
+            "value": 650000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 650000000,
+            "cost_per_unit": 9.22e-7,
+            "est_tokens_month": 650000000,
+            "cost_per_1m_tokens_est": 0.9215,
+            "confidence": "high"
+          },
+          "use_case": "团队协作 / 企业级",
+          "highlights": [
+            "支持 13 款主流编程工具"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 599
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aliyun-bailian-token-plan",
+      "vendor_id": "aliyun",
+      "name": "阿里云百炼 Token Plan",
+      "billing_type": "token",
+      "buy_url": "https://www.aliyun.com/benefit/scene/tokenplan",
+      "badges": [
+        "热门"
+      ],
+      "has_free_tier": false,
+      "min_price_cny": 39,
+      "positioning": "阿里云百炼，¥39 起，含 Qwen3.8-Max 首发；16 款工具兼容，覆盖面最广。",
+      "models": {
+        "count": 9,
+        "partial": true,
+        "listed": [
+          "Qwen3.8-Max",
+          "deepseek-v4-flash",
+          "glm-5.2"
+        ]
+      },
+      "tools": {
+        "count": 16,
+        "partial": true,
+        "listed": [
+          "OpenClaw",
+          "Hermes Agent",
+          "Claude Code"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "aliyun-bailian-token-plan-lite",
+          "name": "Lite 版",
+          "price_cny": 39,
+          "price_display": "¥39/月",
+          "price_note": "官网折扣价",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "官网未公开 Token 总量",
+            "unit_key": "token"
+          },
+          "agent_concurrency": {
+            "min": 1,
+            "max": 2
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "支持文本、视觉等多模态模型",
+            "支持 1-2 个 Agent 并发",
+            "适合原型验证、轻度测试"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 39
+            }
+          ]
+        },
+        {
+          "id": "aliyun-bailian-token-plan-standard",
+          "name": "Standard 版",
+          "price_cny": 139,
+          "price_display": "¥139/月",
+          "price_note": "官网折扣价",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "4 倍 Lite 套餐用量",
+            "unit_key": "token",
+            "multiplier": 4,
+            "derived": true
+          },
+          "agent_concurrency": {
+            "min": 3,
+            "max": 4
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "4 倍 Lite 套餐用量",
+            "支持 3-4 个 Agent 并发",
+            "支持 16 款主流编程工具"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 139
+            }
+          ]
+        },
+        {
+          "id": "aliyun-bailian-token-plan-pro",
+          "name": "Pro 版",
+          "price_cny": 499,
+          "price_display": "¥499/月",
+          "price_note": "官网折扣价",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "16 倍 Lite 套餐用量",
+            "unit_key": "token",
+            "multiplier": 16,
+            "derived": true
+          },
+          "agent_concurrency": {
+            "min": 6,
+            "max": 8
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "16 倍 Lite 套餐用量",
+            "支持 6-8 个 Agent 并发",
+            "重度依赖、高并发海量调用"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 499
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "iflytek-astron-coding-plan",
+      "vendor_id": "iflytek",
+      "name": "讯飞星辰 Astron Coding Plan",
+      "billing_type": "requests",
+      "buy_url": "https://maas.xfyun.cn/packageSubscription?ch=maas-cg-kol-120&tab=month",
+      "badges": [
+        "热门"
+      ],
+      "has_free_tier": false,
+      "min_price_cny": 39,
+      "positioning": "科大讯飞出品，¥39 起，含 GLM-5.2 等 15 模型，模型数量最多。",
+      "models": {
+        "count": 15,
+        "partial": true,
+        "listed": [
+          "GLM-5.2",
+          "Spark X2",
+          "GLM-5"
+        ]
+      },
+      "tools": {
+        "count": 4,
+        "partial": true,
+        "listed": [
+          "Claude Code",
+          "Cline",
+          "Cursor"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "iflytek-astron-coding-plan-pro-sku",
+          "name": "专业版",
+          "price_cny": 39,
+          "price_display": "¥39/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "每 5 小时 1,200 次 / 每周 9,000 次 / 每月 18,000 次请求",
+            "unit_key": "request",
+            "value": 18000,
+            "window": "month",
+            "window_limits": {
+              "5h": 1200,
+              "week": 9000,
+              "month": 18000
+            }
+          },
+          "derived": {
+            "quota_month": 18000,
+            "cost_per_unit": 0.002167,
+            "est_tokens_month": 144000000,
+            "cost_per_1m_tokens_est": 0.2708,
+            "confidence": "low"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "GLM-5 默认选中",
+            "可调用 15 个 AI 模型"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 39
+            }
+          ]
+        },
+        {
+          "id": "iflytek-astron-coding-plan-high-efficiency",
+          "name": "高效版",
+          "price_cny": 199,
+          "price_display": "¥199/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "每 5 小时 6,000 次 / 每周 45,000 次 / 每月 90,000 次请求",
+            "unit_key": "request",
+            "value": 90000,
+            "window": "month",
+            "window_limits": {
+              "5h": 6000,
+              "week": 45000,
+              "month": 90000
+            },
+            "multiplier": 5,
+            "derived": true
+          },
+          "derived": {
+            "quota_month": 90000,
+            "cost_per_unit": 0.002211,
+            "est_tokens_month": 720000000,
+            "cost_per_1m_tokens_est": 0.2764,
+            "confidence": "low"
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "专业版 5 倍请求额度"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 199
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kimi-code-plan",
+      "vendor_id": "moonshot",
+      "name": "Kimi Code Plan",
+      "billing_type": "token",
+      "buy_url": "https://www.kimi.com/membership/pricing",
+      "badges": [
+        "热门"
+      ],
+      "has_free_tier": false,
+      "min_price_cny": 39,
+      "positioning": "月之暗面 Kimi 会员，¥39 起，含 Kimi Code 调用权益；档位为 Go / Plus / Pro / Max 四档，Max 支持百万 Tokens 超长对话。",
+      "models": {
+        "count": 10,
+        "partial": true,
+        "listed": [
+          "kimi-k2.7-code",
+          "kimi-k2.7-code-highspeed",
+          "kimi-k2.6"
+        ]
+      },
+      "tools": {
+        "count": 8,
+        "partial": true,
+        "listed": [
+          "Kimi Code",
+          "Codex",
+          "OpenClaw"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "kimi-code-plan-go",
+          "name": "Go 日常使用",
+          "price_cny": 39,
+          "price_display": "¥39/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "基础 Agent 额度（未公开具体数值）",
+            "unit_key": "agent_quota",
+            "multiplier": 1
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "更多 Agent 额度",
+            "Kimi Code 可调用",
+            "深度研究 / 网站部署"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 39
+            }
+          ]
+        },
+        {
+          "id": "kimi-code-plan-plus",
+          "name": "Plus 效率升级",
+          "price_cny": 79,
+          "price_display": "¥79/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "2 倍 Agent 额度",
+            "unit_key": "agent_quota",
+            "multiplier": 2,
+            "derived": true
+          },
+          "agent_concurrency": {
+            "min": 2,
+            "max": 2
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "2 倍 Agent 额度",
+            "2 个 Agent 任务并行",
+            "Kimi Code 可调用"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 79
+            }
+          ]
+        },
+        {
+          "id": "kimi-code-plan-pro",
+          "name": "Pro 专业优选",
+          "price_cny": 159,
+          "price_display": "¥159/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "4 倍 Agent 额度",
+            "unit_key": "agent_quota",
+            "multiplier": 4,
+            "derived": true
+          },
+          "agent_concurrency": {
+            "min": 2,
+            "max": 2
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "4 倍 Agent 额度",
+            "目标模式，Agent 自主推进",
+            "2 个 Agent 任务并行"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 159
+            }
+          ]
+        },
+        {
+          "id": "kimi-code-plan-max",
+          "name": "Max 全能尊享",
+          "price_cny": 559,
+          "price_display": "¥559/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "10 倍 Agent 额度",
+            "unit_key": "agent_quota",
+            "multiplier": 10,
+            "derived": true
+          },
+          "agent_concurrency": {
+            "min": 4,
+            "max": 4
+          },
+          "use_case": "团队协作 / 企业级",
+          "highlights": [
+            "10 倍 Agent 额度",
+            "百万 Tokens 超长对话",
+            "4 个 Agent 任务并行"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 559
+            }
+          ]
+        }
+      ],
+      "purchase": {
+        "status": "closed_new",
+        "as_of": "2026-07-19",
+        "evidence": "secondary",
+        "source": "https://www.cnfin.com/gs-lb/detail/20260720/4442734_1.html",
+        "note": "2026-07-19 官方《关于算力紧缺与会员暂停开放的说明》：即日起暂停 C 端新用户订阅，已有算力全部投入服务已订阅用户，并将拆分 Kimi 主权益与 Kimi Code 权益；公告称「随着新算力陆续到位，将逐步开放更多订阅名额直至全面恢复正常订阅」。⚠ 本条为**媒体转引官方原文**（二手），且距今已逾两个月，**当前是否已恢复未核实** —— 故本状态只代表 2026-07-19 时点。"
+      }
+    },
+    {
+      "id": "baidu-qianfan-coding-plan",
+      "vendor_id": "baidu",
+      "name": "千帆 Coding Plan",
+      "billing_type": "requests",
+      "buy_url": "https://cloud.baidu.com/product/codingplan.html",
+      "badges": [
+        "热门"
+      ],
+      "has_free_tier": false,
+      "min_price_cny": 40,
+      "positioning": "¥40 起，百度千帆 Coding Plan，11 个工具兼容；单位价格与讯飞、阿里百炼属同一梯队。",
+      "models": {
+        "count": 9,
+        "partial": true,
+        "listed": [
+          "Kimi-K2.5",
+          "DeepSeek-V3.2",
+          "DeepSeek-V4-Pro"
+        ]
+      },
+      "tools": {
+        "count": 11,
+        "partial": true,
+        "listed": [
+          "OpenClaw",
+          "Claude Code",
+          "OpenCode"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "baidu-qianfan-coding-plan-lite",
+          "name": "Coding Plan Lite",
+          "price_cny": 40,
+          "price_display": "¥40/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "每月最多 18,000 次请求",
+            "unit_key": "request",
+            "value": 18000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 18000,
+            "cost_per_unit": 0.002222,
+            "est_tokens_month": 144000000,
+            "cost_per_1m_tokens_est": 0.2778,
+            "confidence": "low"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "可调用 9 个 AI 模型"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 40
+            }
+          ]
+        },
+        {
+          "id": "baidu-qianfan-coding-plan-pro",
+          "name": "Coding Plan Pro",
+          "price_cny": 200,
+          "price_display": "¥200/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "每月最多 90,000 次请求",
+            "unit_key": "request",
+            "value": 90000,
+            "window": "month",
+            "multiplier": 5,
+            "derived": true
+          },
+          "derived": {
+            "quota_month": 90000,
+            "cost_per_unit": 0.002222,
+            "est_tokens_month": 720000000,
+            "cost_per_1m_tokens_est": 0.2778,
+            "confidence": "low"
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "支持 11 款主流编程工具"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 200
+            }
+          ]
+        }
+      ],
+      "purchase": {
+        "status": "closed_new",
+        "as_of": "2026-07-13",
+        "evidence": "primary",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/Fmrexuejc",
+        "note": "官方公告《Token Plan个人版上线及Coding Plan停售公告》：北京时间 2026-07-13 10:00 起 Coding Plan 全档位停止接受新购订单。已购买且在有效期内的套餐功能与使用规则不变、可正常使用至服务周期结束，存量用户可通过一键迁移通道升级至 Token Plan。⚠ 本页的 ¥40/¥200 仍然准确，但它描述的是**存量用户**的价格，不是新用户能买到的价格。"
+      }
+    },
+    {
+      "id": "baidu-qianfan-token-plan",
+      "vendor_id": "baidu",
+      "name": "千帆 Token Plan 个人版",
+      "billing_type": "token",
+      "buy_url": "https://cloud.baidu.com/product/codingplan.html",
+      "badges": [],
+      "has_free_tier": false,
+      "min_price_cny": 9.9,
+      "positioning": "与千帆 Coding Plan 并列在售的另一条产品线：不按请求次数限流，而是按月给 Token/积分额度，官网原文「完全取消 Coding Plan 原有的三层限流体系」。同档位有积分制与 Token 制两种计费口径，本库按 Token 制建模。",
+      "tiers": [
+        {
+          "id": "baidu-qianfan-token-plan-mini",
+          "name": "Mini",
+          "price_cny": 9.9,
+          "price_display": "¥9.9/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "1000 万 Tokens /月",
+            "unit_key": "token",
+            "value": 10000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 10000000,
+            "cost_per_unit": 9.9e-7,
+            "est_tokens_month": 10000000,
+            "cost_per_1m_tokens_est": 0.99,
+            "confidence": "high"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "可切换 GLM / DeepSeek / Kimi 等主流国产模型"
+          ],
+          "price_note": "常规价 ¥9.9/月（页面划线价）；首购五折 ¥4.9/月，续费限时 6 折",
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 9.9
+            }
+          ]
+        },
+        {
+          "id": "baidu-qianfan-token-plan-lite",
+          "name": "Lite",
+          "price_cny": 40,
+          "price_display": "¥40/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "4200 万 Tokens /月",
+            "unit_key": "token",
+            "value": 42000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 42000000,
+            "cost_per_unit": 9.524e-7,
+            "est_tokens_month": 42000000,
+            "cost_per_1m_tokens_est": 0.9524,
+            "confidence": "high"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "可切换 GLM / DeepSeek / Kimi 等主流国产模型"
+          ],
+          "price_note": "常规价 ¥40/月（页面划线价）；首购五折 ¥19.9/月，续费限时 6 折",
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 40
+            }
+          ]
+        },
+        {
+          "id": "baidu-qianfan-token-plan-pro",
+          "name": "Pro",
+          "price_cny": 200,
+          "price_display": "¥200/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "2.3 亿 Tokens /月",
+            "unit_key": "token",
+            "value": 230000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 230000000,
+            "cost_per_unit": 8.696e-7,
+            "est_tokens_month": 230000000,
+            "cost_per_1m_tokens_est": 0.8696,
+            "confidence": "high"
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "可切换 GLM / DeepSeek / Kimi 等主流国产模型"
+          ],
+          "price_note": "常规价 ¥200/月（页面划线价）；首购五折 ¥99.9/月，续费限时 6 折",
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 200
+            }
+          ]
+        },
+        {
+          "id": "baidu-qianfan-token-plan-max",
+          "name": "Max",
+          "price_cny": 600,
+          "price_display": "¥600/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "7 亿 Tokens /月",
+            "unit_key": "token",
+            "value": 700000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 700000000,
+            "cost_per_unit": 8.571e-7,
+            "est_tokens_month": 700000000,
+            "cost_per_1m_tokens_est": 0.8571,
+            "confidence": "high"
+          },
+          "use_case": "团队协作 / 企业级",
+          "highlights": [
+            "可切换 GLM / DeepSeek / Kimi 等主流国产模型"
+          ],
+          "price_note": "常规价 ¥600/月（页面划线价）；首购五折 ¥299.9/月，续费限时 6 折",
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 600
+            }
+          ]
+        }
+      ],
+      "purchase": {
+        "status": "on_sale",
+        "as_of": "2026-07-13",
+        "evidence": "primary",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/Fmrexuejc",
+        "note": "同一公告：Token Plan 个人版自 2026-07-13 10:00 起全面开放购买，是 Coding Plan 停止新购后的承接产品（两者不可互相迁移比对）。"
+      }
+    },
+    {
+      "id": "minimax-token-plan",
+      "vendor_id": "minimax",
+      "name": "MiniMax Token Plan",
+      "billing_type": "token",
+      "buy_url": "https://platform.minimaxi.com/subscribe/token-plan",
+      "badges": [
+        "热门"
+      ],
+      "has_free_tier": false,
+      "min_price_cny": 49,
+      "positioning": "官网月付 ¥49 起，MiniMax 全系模型（M3/M2.7/图像/语音），1M 长上下文，多模态能力最全；按年订阅立省 2 个月。",
+      "models": {
+        "count": 5,
+        "partial": true,
+        "listed": [
+          "MiniMax-M3",
+          "MiniMax-M2.7",
+          "MiniMax-M2.5"
+        ]
+      },
+      "tools": {
+        "count": 5,
+        "partial": true,
+        "listed": [
+          "Hermes Agent",
+          "OpenClaw",
+          "Claude Code"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "minimax-token-plan-plus",
+          "name": "Plus",
+          "price_cny": 49,
+          "price_display": "¥49/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "月度约 6 亿+ Token（M3 用量，官网原文；含「约」「+」，未给精确值）",
+            "unit_key": "token"
+          },
+          "agent_concurrency": {
+            "min": 3,
+            "max": 4
+          },
+          "context_window": 1000000,
+          "multimodal": true,
+          "use_case": "日常主力开发",
+          "highlights": [
+            "支持 MiniMax 全系模型（M3/M2.7/图像/语音/音乐）",
+            "1M 长上下文",
+            "M3 原生多模态理解：图像/视频输入"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 49
+            }
+          ],
+          "price_note": "官网「连续包月」¥49/月（2026-09-28 实测，页面无折扣说明）；曾按聚合站口径记过 ¥44.1 的「9 折」，未能在官网找到依据，已修正"
+        },
+        {
+          "id": "minimax-token-plan-max",
+          "name": "Max",
+          "price_cny": 119,
+          "price_display": "¥119/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "月度约 18 亿+ Token（M3 用量，官网原文；含「约」「+」，未给精确值）",
+            "unit_key": "token"
+          },
+          "agent_concurrency": {
+            "min": 4,
+            "max": 5
+          },
+          "context_window": 1000000,
+          "multimodal": true,
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "支持 MiniMax 全系模型",
+            "1M 长上下文",
+            "支持 4-5 个 Agent 并发运行"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 119
+            }
+          ],
+          "price_note": "官网「连续包月」¥119/月（2026-09-28 实测，页面无折扣说明）；曾按聚合站口径记过 ¥107.1 的「9 折」，未能在官网找到依据，已修正"
+        },
+        {
+          "id": "minimax-token-plan-ultra",
+          "name": "Ultra",
+          "price_cny": 469,
+          "price_display": "¥469/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "月度约 71 亿+ Token（M3 用量，官网原文；含「约」「+」，未给精确值）",
+            "unit_key": "token"
+          },
+          "agent_concurrency": {
+            "min": 6,
+            "max": 7
+          },
+          "context_window": 1000000,
+          "multimodal": true,
+          "use_case": "团队协作 / 企业级",
+          "highlights": [
+            "支持 MiniMax 全系模型",
+            "1M 长上下文",
+            "支持 6-7 个 Agent 并发运行"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 469
+            }
+          ],
+          "price_note": "官网「连续包月」¥469/月（2026-09-28 实测，页面无折扣说明）；曾按聚合站口径记过 ¥422.1 的「9 折」，未能在官网找到依据，已修正"
+        }
+      ]
+    },
+    {
+      "id": "ucloud-agent-plan",
+      "vendor_id": "ucloud",
+      "name": "优云智算 Agent Plan",
+      "billing_type": "requests",
+      "buy_url": "https://console.compshare.cn/light-gpu/model-subscription",
+      "badges": [],
+      "has_free_tier": false,
+      "min_price_cny": 49,
+      "positioning": "¥49 起，UCloud 优刻得优云智算 Agent Plan；6 档最细，按 5 小时/周/月三重窗口计费。",
+      "models": {
+        "count": 6,
+        "partial": true,
+        "listed": [
+          "glm-5.2",
+          "glm-5.1",
+          "MiniMax-M2.7"
+        ]
+      },
+      "tools": {
+        "count": 9,
+        "partial": true,
+        "listed": [
+          "Cursor",
+          "Trae",
+          "Claude Code"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "ucloud-agent-plan-mini",
+          "name": "Mini 迷你版",
+          "price_cny": 49,
+          "price_display": "¥49/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "5 小时 ≈300 次 / 每周 ≈750 次 / 每月 ≈1900 次",
+            "unit_key": "request",
+            "value": 1900,
+            "window": "month",
+            "window_limits": {
+              "5h": 300,
+              "week": 750,
+              "month": 1900
+            }
+          },
+          "derived": {
+            "quota_month": 1900,
+            "cost_per_unit": 0.025789,
+            "est_tokens_month": 15200000,
+            "cost_per_1m_tokens_est": 3.2237,
+            "confidence": "low"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "9 个工具兼容"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 49
+            }
+          ]
+        },
+        {
+          "id": "ucloud-agent-plan-lite",
+          "name": "Lite 入门版",
+          "price_cny": 99,
+          "price_display": "¥99/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "5 小时 ≈600 次 / 每周 ≈1500 次 / 每月 ≈3800 次",
+            "unit_key": "request",
+            "value": 3800,
+            "window": "month",
+            "window_limits": {
+              "5h": 600,
+              "week": 1500,
+              "month": 3800
+            }
+          },
+          "derived": {
+            "quota_month": 3800,
+            "cost_per_unit": 0.026053,
+            "est_tokens_month": 30400000,
+            "cost_per_1m_tokens_est": 3.2566,
+            "confidence": "low"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "9 个工具兼容"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 99
+            }
+          ]
+        },
+        {
+          "id": "ucloud-agent-plan-basic",
+          "name": "Basic 基础版",
+          "price_cny": 199,
+          "price_display": "¥199/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "5 小时 ≈1200 次 / 每周 ≈3000 次 / 每月 ≈7600 次",
+            "unit_key": "request",
+            "value": 7600,
+            "window": "month",
+            "window_limits": {
+              "5h": 1200,
+              "week": 3000,
+              "month": 7600
+            }
+          },
+          "derived": {
+            "quota_month": 7600,
+            "cost_per_unit": 0.026184,
+            "est_tokens_month": 60800000,
+            "cost_per_1m_tokens_est": 3.273,
+            "confidence": "low"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "9 个工具兼容"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 199
+            }
+          ]
+        },
+        {
+          "id": "ucloud-agent-plan-pro",
+          "name": "Pro 增强版",
+          "price_cny": 499,
+          "price_display": "¥499/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "5 小时 ≈3000 次 / 每周 ≈7500 次 / 每月 ≈19000 次",
+            "unit_key": "request",
+            "value": 19000,
+            "window": "month",
+            "window_limits": {
+              "5h": 3000,
+              "week": 7500,
+              "month": 19000
+            }
+          },
+          "derived": {
+            "quota_month": 19000,
+            "cost_per_unit": 0.026263,
+            "est_tokens_month": 152000000,
+            "cost_per_1m_tokens_est": 3.2829,
+            "confidence": "low"
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "9 个工具兼容"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 499
+            }
+          ]
+        },
+        {
+          "id": "ucloud-agent-plan-max",
+          "name": "Max 高级版",
+          "price_cny": 799,
+          "price_display": "¥799/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "5 小时 ≈4800 次 / 每周 ≈12000 次 / 每月 ≈31000 次",
+            "unit_key": "request",
+            "value": 31000,
+            "window": "month",
+            "window_limits": {
+              "5h": 4800,
+              "week": 12000,
+              "month": 31000
+            }
+          },
+          "derived": {
+            "quota_month": 31000,
+            "cost_per_unit": 0.025774,
+            "est_tokens_month": 248000000,
+            "cost_per_1m_tokens_est": 3.2218,
+            "confidence": "low"
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "9 个工具兼容"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 799
+            }
+          ]
+        },
+        {
+          "id": "ucloud-agent-plan-ultra",
+          "name": "Ultra 畅享版",
+          "price_cny": 999,
+          "price_display": "¥999/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "5 小时 ≈6000 次 / 每周 ≈15000 次 / 每月 ≈39000 次",
+            "unit_key": "request",
+            "value": 39000,
+            "window": "month",
+            "window_limits": {
+              "5h": 6000,
+              "week": 15000,
+              "month": 39000
+            }
+          },
+          "derived": {
+            "quota_month": 39000,
+            "cost_per_unit": 0.025615,
+            "est_tokens_month": 312000000,
+            "cost_per_1m_tokens_est": 3.2019,
+            "confidence": "low"
+          },
+          "use_case": "团队协作 / 企业级",
+          "highlights": [
+            "9 个工具兼容"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 999
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "huawei-token-plan",
+      "vendor_id": "huawei-cloud",
+      "name": "华为云 Token Plan",
+      "billing_type": "token",
+      "buy_url": "https://www.huaweicloud.com/agentorchard/tokenplan.html",
+      "badges": [],
+      "has_free_tier": false,
+      "min_price_cny": 59,
+      "positioning": "华为云出品，¥59 起，含 GLM5.1 等 5 模型；Max 档单位 Token 价格最低（约 ¥0.91/百万 Token）。",
+      "models": {
+        "count": 5,
+        "partial": true,
+        "listed": [
+          "GLM5.1",
+          "GLM5",
+          "Kimi-K2.6"
+        ]
+      },
+      "tools": {
+        "count": 5,
+        "partial": true,
+        "listed": [
+          "Claude Code",
+          "OpenClaw",
+          "OpenCode"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "huawei-token-plan-lite",
+          "name": "Lite",
+          "price_cny": 59,
+          "price_display": "¥59/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "5000 万 Token / 订阅月",
+            "unit_key": "token",
+            "value": 50000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 50000000,
+            "cost_per_unit": 0.00000118,
+            "est_tokens_month": 50000000,
+            "cost_per_1m_tokens_est": 1.18,
+            "confidence": "high"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "可调用 5 个 AI 模型"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 59
+            }
+          ]
+        },
+        {
+          "id": "huawei-token-plan-standard",
+          "name": "Standard",
+          "price_cny": 149,
+          "price_display": "¥149/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "1.3 亿 Token / 订阅月",
+            "unit_key": "token",
+            "value": 130000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 130000000,
+            "cost_per_unit": 0.000001146,
+            "est_tokens_month": 130000000,
+            "cost_per_1m_tokens_est": 1.1462,
+            "confidence": "high"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "支持 5 款主流编程工具"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 149
+            }
+          ]
+        },
+        {
+          "id": "huawei-token-plan-pro",
+          "name": "Pro",
+          "price_cny": 399,
+          "price_display": "¥399/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "3.8 亿 Token / 订阅月",
+            "unit_key": "token",
+            "value": 380000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 380000000,
+            "cost_per_unit": 0.00000105,
+            "est_tokens_month": 380000000,
+            "cost_per_1m_tokens_est": 1.05,
+            "confidence": "high"
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "支持 5 款主流编程工具"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 399
+            }
+          ]
+        },
+        {
+          "id": "huawei-token-plan-max",
+          "name": "Max",
+          "price_cny": 799,
+          "price_display": "¥799/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "8.8 亿 Token / 订阅月",
+            "unit_key": "token",
+            "value": 880000000,
+            "window": "month"
+          },
+          "derived": {
+            "quota_month": 880000000,
+            "cost_per_unit": 9.08e-7,
+            "est_tokens_month": 880000000,
+            "cost_per_1m_tokens_est": 0.908,
+            "confidence": "high"
+          },
+          "use_case": "团队协作 / 企业级",
+          "highlights": [
+            "支持 5 款主流编程工具",
+            "单位 Token 成本最低档"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 799
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "opencode-go",
+      "vendor_id": "anomaly",
+      "name": "OpenCode Go",
+      "billing_type": "subscription",
+      "buy_url": "https://opencode.ai/go",
+      "badges": [],
+      "has_free_tier": false,
+      "min_price_cny": 70,
+      "positioning": "Anomaly 编程套餐，含 Qwen3.7 Max 等 13 模型，兼容 7 款主流工具；仅 1 档，首月半价。",
+      "models": {
+        "count": 13,
+        "partial": true,
+        "listed": [
+          "GLM-5.2",
+          "Qwen3.7 Max",
+          "Qwen3.7 Plus"
+        ]
+      },
+      "tools": {
+        "count": 7,
+        "partial": true,
+        "listed": [
+          "OpenCode",
+          "Claude Code",
+          "Cursor"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "opencode-go-standard",
+          "name": "标准版",
+          "price_cny": 70,
+          "price_display": "¥70/月",
+          "price_note": "官网 $10/月；¥70 为按 1:7 的估算值，首月半价",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "固定订阅，未公开额度",
+            "unit_key": "seat"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "可调用 13 个 AI 模型",
+            "支持 7 款主流编程工具",
+            "首月半价"
+          ],
+          "promo": "首月半价",
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 70
+            }
+          ],
+          "price_currency": "USD",
+          "price_foreign": 10
+        }
+      ],
+      "price_note": "官网以美元标价（$10/月），本库人民币值为汇率估算"
+    },
+    {
+      "id": "zhipu-glm-coding-plan",
+      "vendor_id": "zhipu",
+      "name": "GLM Coding Plan",
+      "billing_type": "credits",
+      "buy_url": "https://www.bigmodel.cn/glm-coding",
+      "badges": [
+        "热门"
+      ],
+      "has_free_tier": false,
+      "min_price_cny": 94.4,
+      "positioning": "智谱 GLM 编程套餐，季付 8 折后 ¥94.4 起（月付原价 ¥118），含 GLM-5.3；支持 Claude Code 等 20+ 编程工具，是生态兼容最广的老牌选择。",
+      "models": {
+        "count": 3,
+        "partial": true,
+        "listed": [
+          "GLM-5.3",
+          "GLM-5-Turbo",
+          "GLM-4.7"
+        ]
+      },
+      "tools": {
+        "count": 20,
+        "partial": true,
+        "listed": [
+          "Kilo Code",
+          "Cline",
+          "Crush"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "zhipu-glm-coding-plan-lite",
+          "name": "Lite",
+          "price_cny": 94.4,
+          "price_display": "¥94.40/月",
+          "price_note": "连续包季 8 折（月付原价 ¥118）",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "每周 10,000 积分",
+            "unit_key": "credit",
+            "value": 10000,
+            "window": "week"
+          },
+          "derived": {
+            "quota_month": 40000,
+            "cost_per_unit": 0.00236,
+            "confidence": "medium"
+          },
+          "use_case": "个人开发者尝鲜",
+          "highlights": [
+            "小型 Repo 轻量级迭代",
+            "支持 Claude Code 等 20+ 编程工具"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 94.4
+            }
+          ],
+          "price_list_cny": 118
+        },
+        {
+          "id": "zhipu-glm-coding-plan-pro",
+          "name": "Pro",
+          "price_cny": 430.4,
+          "price_display": "¥430.40/月",
+          "price_note": "连续包季 8 折（月付原价 ¥538）",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "6 倍 Lite 用量额度（每周约 60,000 积分）",
+            "unit_key": "credit",
+            "value": 60000,
+            "window": "week",
+            "multiplier": 6,
+            "derived": true
+          },
+          "derived": {
+            "quota_month": 240000,
+            "cost_per_unit": 0.001793,
+            "confidence": "medium"
+          },
+          "use_case": "日常主力开发",
+          "highlights": [
+            "中型 Repo 日常开发",
+            "覆盖多款精选 MCP 工具",
+            "更快生成速度"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 430.4
+            }
+          ],
+          "price_list_cny": 538
+        },
+        {
+          "id": "zhipu-glm-coding-plan-max",
+          "name": "Max",
+          "price_cny": 862.4,
+          "price_display": "¥862.40/月",
+          "price_note": "连续包季 8 折（月付原价 ¥1078）",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "14 倍 Lite 用量额度（每周约 140,000 积分）",
+            "unit_key": "credit",
+            "value": 140000,
+            "window": "week",
+            "multiplier": 14,
+            "derived": true
+          },
+          "derived": {
+            "quota_month": 560000,
+            "cost_per_unit": 0.00154,
+            "confidence": "medium"
+          },
+          "use_case": "团队协作 / 企业级",
+          "highlights": [
+            "高阶用户中大型 Repo 深度开发",
+            "首发接入最新旗舰模型及功能",
+            "高峰期专属资源优先保障"
+          ],
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 862.4
+            }
+          ],
+          "price_list_cny": 1078
+        }
+      ]
+    },
+    {
+      "id": "aliyun-bailian-coding-plan",
+      "vendor_id": "aliyun",
+      "name": "阿里云百炼 Coding Plan",
+      "billing_type": "requests",
+      "buy_url": "https://www.aliyun.com/benefit/scene/codingplan",
+      "badges": [],
+      "has_free_tier": false,
+      "min_price_cny": 200,
+      "positioning": "阿里云编程套餐，含 qwen3.7-plus 等 10 模型，兼容 14 款主流工具；只有 1 档，偏团队/重度场景。",
+      "models": {
+        "count": 10,
+        "partial": true,
+        "listed": [
+          "qwen3.7-plus",
+          "qwen3.6-plus",
+          "kimi-k2.5"
+        ]
+      },
+      "tools": {
+        "count": 14,
+        "partial": true,
+        "listed": [
+          "OpenClaw",
+          "Hermes Agent",
+          "Claude Code"
+        ]
+      },
+      "tiers": [
+        {
+          "id": "aliyun-bailian-coding-plan-pro",
+          "name": "Pro",
+          "price_cny": 200,
+          "price_display": "¥200/月",
+          "billing_period": "monthly",
+          "quota": {
+            "raw": "每 5 小时 6,000 次 / 每周 45,000 次 / 每月 90,000 次请求",
+            "unit_key": "request",
+            "value": 90000,
+            "window": "month",
+            "window_limits": {
+              "5h": 6000,
+              "week": 45000,
+              "month": 90000
+            }
+          },
+          "derived": {
+            "quota_month": 90000,
+            "cost_per_unit": 0.002222,
+            "est_tokens_month": 720000000,
+            "cost_per_1m_tokens_est": 0.2778,
+            "confidence": "low"
+          },
+          "use_case": "复杂项目 / 代码重构",
+          "highlights": [
+            "兼容 14 款主流编程工具",
+            "可调用 10 个 AI 模型"
+          ],
+          "is_recommended": true,
+          "price_history": [
+            {
+              "date": "2026-09-28",
+              "price_cny": 200
+            }
+          ]
+        }
+      ],
+      "purchase": {
+        "status": "limited",
+        "as_of": "2026-09-22",
+        "evidence": "primary",
+        "source": "https://help.aliyun.com/zh/model-studio/token-plan-overview",
+        "note": "阿里云帮助中心（更新于 2026-09-22）「关于 Coding Plan」：「Coding Plan 和 Token Plan 是两个独立的订阅产品，两者之间无法迁移或升级。Coding Plan Lite 已于 2026 年 3 月 20 日停止新购，2026 年 4 月 13 日停止续费和升级；Coding Plan Pro 为限量抢购，库存售罄后不再补充。」本库只建模了 Pro，故记为限量抢购而非正常在售。"
+      }
+    }
+  ]
+};

@@ -1,0 +1,17 @@
+# 依赖
+node_modules/
+
+# 系统
+.DS_Store
+Thumbs.db
+*.log
+
+# 采集与渲染的落盘产物（随时可重跑，不进仓库）
+scripts/collect/.probe-out/
+scripts/collect/.render-out/
+
+# 迁移脚本写的备份（137 份，12M）
+data/backups/
+
+# 原型设计截图（18 张，2.5M）
+preview-app/

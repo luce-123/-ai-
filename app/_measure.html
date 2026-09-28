@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CodePlan 比价 App · 设计方案</title>
+<meta name="description" content="国内 AI Coding Plan 比价 App 的界面设计方案与可点击原型：榜单、选型向导、档位对比、变更动态与口径说明。">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<div class="board">
+
+  <!-- ══════════════ 左：设计说明（仅桌面展示） ══════════════ -->
+  <aside class="board__spec">
+    <header class="spec__head">
+      <p class="spec__eyebrow">App 设计 · v2 原型</p>
+      <h1 class="spec__title">CodePlan<br><em>比价</em></h1>
+      <p class="spec__lede">
+        把「17 家厂商、21 个套餐、68 个档位的错口径价格」装进一部手机。
+        目标只有一个：<strong>让人在 60 秒内做出一个不会后悔的订阅决定</strong>。
+      </p>
+    </header>
+
+    <section class="spec__block">
+      <h2>屏幕</h2>
+      <ul class="spec__screens" id="specScreens"></ul>
+    </section>
+
+    <section class="spec__block">
+      <h2>三条不能破的规矩</h2>
+      <ol class="spec__rules" id="specRules"></ol>
+    </section>
+
+    <section class="spec__block">
+      <h2>刻意取舍</h2>
+      <ul class="spec__choices" id="specChoices"></ul>
+    </section>
+
+    <section class="spec__block spec__block--foot">
+      <p class="spec__meta" id="specMeta"></p>
+      <p class="spec__muted">
+        原型直接读取 <code>data/plans.json</code>（同一份数据集），
+        不是另画一套假数据 —— 设计里承诺的每个状态都能在这里点到。
+      </p>
+    </section>
+  </aside>
+
+  <!-- ══════════════ 中：设备 ══════════════ -->
+  <div class="board__device">
+    <div class="device">
+      <div class="device__screen">
+
+        <div class="app" id="app">
+
+          <!-- 顶栏 -->
+          <header class="appbar" id="appbar">
+            <div class="appbar__lead" id="appbarLead">
+              <span class="appbar__mark">C</span>
+              <span class="appbar__brand">CodePlan<em>比价</em></span>
+            </div>
+            <h1 class="appbar__title" id="appbarTitle" hidden></h1>
+            <div class="appbar__tools">
+              <button class="icons" id="themeBtn" type="button" aria-label="切换深浅色">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8.4 8.4 0 0 1 9.8 4a8.6 8.6 0 1 0 10.2 10.2z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+              </button>
+              <button class="icons" id="searchBtn" type="button" aria-label="搜索" data-go="rank">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.4" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M15.8 15.8 20.5 20.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </header>
+
+          <!-- 屏幕容器 -->
+          <main class="app__body" id="appBody">
+
+            <!-- ─────── 首页 ─────── -->
+            <section class="screen is-active" id="screen-home" data-screen="home">
+              <div class="snap" id="homeSnap"></div>
+              <div class="card card--cta" id="homeCta"></div>
+              <section class="block">
+                <header class="block__head">
+                  <h2>榜单速览</h2>
+                  <button class="textbtn" type="button" data-go="rank">全部 68 档</button>
+                </header>
+                <div class="rank-mini" id="homeTop"></div>
+              </section>
+              <section class="block">
+                <header class="block__head">
+                  <h2>最近变更</h2>
+                  <button class="textbtn" type="button" data-go="pulse">全部</button>
+                </header>
+                <div class="feed" id="homePulse"></div>
+              </section>
+              <section class="block">
+                <header class="block__head"><h2>口径速查</h2></header>
+                <div class="ledger" id="homeLedger"></div>
+              </section>
+            </section>
+
+            <!-- ─────── 榜单 ─────── -->
+            <section class="screen" id="screen-rank" data-screen="rank">
+              <div class="searchbar">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.4" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M15.8 15.8 20.5 20.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+                <input type="search" id="q" placeholder="厂商 / 套餐 / 模型 / 工具" autocomplete="off">
+                <button class="searchbar__clear" id="qClear" type="button" aria-label="清空" hidden>&times;</button>
+              </div>
+
+              <div class="chiprow">
+                <div class="chips" id="billingChips"></div>
+              </div>
+              <div class="chiprow">
+                <div class="chips" id="useCaseChips"></div>
+              </div>
+
+              <div class="toolbar">
+                <span class="toolbar__count" id="rankCount"></span>
+                <div class="toolbar__right">
+                  <button class="pillbtn" id="filterBtn" type="button" aria-haspopup="dialog">
+                    筛选<span class="pillbtn__dot" id="filterDot" hidden></span>
+                  </button>
+                  <label class="pillbtn pillbtn--select">
+                    <select id="sort">
+                      <option value="cost-asc">单位成本 ↑</option>
+                      <option value="price-asc">月费 ↑</option>
+                      <option value="tokens-desc">折算额度 ↓</option>
+                      <option value="eco-desc">生态 ↓</option>
+                      <option value="vendor">厂商名</option>
+                    </select>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </label>
+                </div>
+              </div>
+
+              <p class="notice" id="rankNotice" hidden></p>
+
+              <div class="rows" id="rankRows"></div>
+              <p class="empty" id="rankEmpty" hidden>没有符合条件的档位。<br>试着放宽计费口径或提高预算上限。</p>
+            </section>
+
+            <!-- ─────── 选型向导 ─────── -->
+            <section class="screen" id="screen-wizard" data-screen="wizard">
+              <div class="wizard__steps" id="wzSteps"></div>
+              <div class="wizard__body" id="wzBody"></div>
+            </section>
+
+            <!-- ─────── 动态 ─────── -->
+            <section class="screen" id="screen-pulse" data-screen="pulse">
+              <div class="notice notice--info" id="pulseNote"></div>
+              <div class="feed" id="pulseBody"></div>
+            </section>
+
+            <!-- ─────── 说明 ─────── -->
+            <section class="screen" id="screen-about" data-screen="about">
+              <section class="block">
+                <header class="block__head"><h2>计费口径怎么折算</h2></header>
+                <div class="ledger" id="aboutLedger"></div>
+              </section>
+              <section class="block">
+                <header class="block__head"><h2>数据可信度</h2></header>
+                <div class="trust" id="aboutTrust"></div>
+              </section>
+              <section class="block">
+                <header class="block__head"><h2>来源与免责</h2></header>
+                <div class="prose" id="aboutSource"></div>
+              </section>
+              <section class="block">
+                <header class="block__head"><h2>还没做的</h2></header>
+                <div class="prose" id="aboutTodo"></div>
+              </section>
+            </section>
+
+          </main>
+
+          <!-- 已选对比条 -->
+          <div class="cmpbar" id="cmpBar" hidden>
+            <div class="cmpbar__rail" id="cmpRail"></div>
+            <button class="btn btn--primary btn--sm" id="cmpGo" type="button">对比</button>
+          </div>
+
+          <!-- 底部 Tab -->
+          <nav class="tabbar" id="tabbar" role="tablist" aria-label="主导航"></nav>
+
+          <!-- ══════ 弹层（留在手机屏内，才看得出它在手机上的真实占位） ══════ -->
+          <div class="scrim" id="scrim" hidden></div>
+
+          <section class="sheet" id="detailSheet" role="dialog" aria-modal="true" aria-label="套餐详情" hidden>
+            <header class="sheet__head">
+              <h2 id="detailTitle">套餐详情</h2>
+              <button class="icons" data-close type="button" aria-label="关闭">&times;</button>
+            </header>
+            <div class="sheet__body" id="detailBody"></div>
+          </section>
+
+          <section class="sheet" id="compareSheet" role="dialog" aria-modal="true" aria-label="档位对比" hidden>
+            <header class="sheet__head">
+              <h2>档位对比</h2>
+              <button class="icons" data-close type="button" aria-label="关闭">&times;</button>
+            </header>
+            <div class="sheet__body" id="compareBody"></div>
+          </section>
+
+          <section class="sheet" id="filterSheet" role="dialog" aria-modal="true" aria-label="筛选" hidden>
+            <header class="sheet__head">
+              <h2>筛选</h2>
+              <button class="icons" data-close type="button" aria-label="关闭">&times;</button>
+            </header>
+            <div class="sheet__body" id="filterBody"></div>
+          </section>
+
+        </div><!-- /.app -->
+
+      </div><!-- /.device__screen -->
+    </div><!-- /.device -->
+  </div><!-- /.board__device -->
+
+</div><!-- /.board -->
+
+<script src="../data/plans.js"></script>
+<script src="app.js"></script>
+<script>
+setTimeout(function(){
+  var d=document.documentElement, out=[];
+  out.push("innerW="+window.innerWidth+" clientW="+d.clientWidth+" scrollW="+d.scrollWidth);
+  var t=document.getElementById("tabbar").getBoundingClientRect();
+  out.push("tabbar.w="+t.width.toFixed(0)+" right="+t.right.toFixed(0)+" tabs="+document.querySelectorAll(".tabbar button").length);
+  var a=document.getElementById("app").getBoundingClientRect();
+  out.push("app.w="+a.width.toFixed(0)+" right="+a.right.toFixed(0));
+  var cw=d.clientWidth, over=[];
+  Array.prototype.forEach.call(document.querySelectorAll("*"),function(el){var r=el.getBoundingClientRect(); if(r.width>0&&r.right>cw+1) over.push(el.tagName+"."+String(el.className).slice(0,40)+" right="+r.right.toFixed(0));});
+  out.push("OVERFLOW="+over.length+(over.length?" >> "+over.slice(0,8).join(" ;; "):""));
+  document.title=out.join(" | ");
+},1300);
+</script></body>
+</html>

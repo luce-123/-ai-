@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodePlan 比价 · 国内 AI Coding Plan 全厂商对比</title>
+<meta name="description" content="聚合国内 17 家厂商的 AI 编程订阅套餐，价格、额度、支持模型、兼容工具全维度对比，并统一计费口径换算单位成本。">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ===================== 顶栏 ===================== -->
+<header class="topbar">
+  <div class="shell topbar__inner">
+    <a class="brand" href="#">
+      <span class="brand__mark">C</span>
+      <span class="brand__name">CodePlan<em>比价</em></span>
+    </a>
+    <nav class="topbar__nav">
+      <a href="#matrix" class="is-active">比价矩阵</a>
+      <a href="#how">口径说明</a>
+    </nav>
+    <div class="topbar__meta">
+      <span class="snap" id="snapLabel" title="数据快照日期"></span>
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="切换深浅色">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8.4 8.4 0 0 1 9.8 4a8.6 8.6 0 1 0 10.2 10.2z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="shell">
+
+  <!-- ===================== 概览 ===================== -->
+  <section class="hero">
+    <div class="hero__lead">
+      <span class="pill pill--vivid">全厂商聚合</span>
+      <h1>国内 <em>AI Coding Plan</em> 到底哪家便宜</h1>
+      <p>
+        各厂商计费口径完全不同——有的按 Token、有的按请求次数、有的按积分、
+        有的按 Agent 额度。本站把它们折算到统一口径，再算单位成本。
+        <strong>起售价低 ≠ 性价比高</strong>，这是这个页面存在的理由。
+      </p>
+    </div>
+    <ul class="stats" id="stats"></ul>
+  </section>
+
+  <!-- ===================== 筛选器 ===================== -->
+  <section class="filters" id="matrix">
+    <div class="filters__row">
+      <label class="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" id="q" placeholder="搜索厂商、套餐、模型或工具，如 GLM-5.3 / Claude Code">
+      </label>
+
+      <div class="filters__spacer"></div>
+
+      <label class="switch">
+        <input type="checkbox" id="freeOnly">
+        <span class="switch__track"><span class="switch__dot"></span></span>
+        <span>只看有免费档</span>
+      </label>
+
+      <label class="select">
+        <span>排序</span>
+        <select id="sort">
+          <option value="price-asc">月费从低到高</option>
+          <option value="cost-asc">单位成本从低到高</option>
+          <option value="tokens-desc">折算额度从大到小</option>
+          <option value="models-desc">模型数量从多到少</option>
+          <option value="tools-desc">兼容工具从多到少</option>
+          <option value="vendor">按厂商名</option>
+        </select>
+      </label>
+
+      <div class="viewtoggle" id="viewToggle" role="tablist" aria-label="视图切换">
+        <button type="button" data-view="table" class="is-active" role="tab">矩阵</button>
+        <button type="button" data-view="card" role="tab">卡片</button>
+      </div>
+    </div>
+
+    <div class="filters__row filters__row--wrap">
+      <div class="chipline">
+        <span class="chipline__label">计费口径</span>
+        <div class="chips" id="billingChips"></div>
+      </div>
+      <div class="chipline">
+        <span class="chipline__label">适用场景</span>
+        <div class="chips" id="useCaseChips"></div>
+      </div>
+      <div class="chipline">
+        <span class="chipline__label">月费上限</span>
+        <input type="range" id="priceRange" min="0" max="1400" step="10" value="1400">
+        <output class="rangeval" id="priceVal">不限</output>
+      </div>
+    </div>
+
+    <div class="filters__row filters__row--foot">
+      <p class="resultcount" id="resultCount"></p>
+      <button class="linkbtn" id="resetBtn" type="button">清空全部筛选</button>
+    </div>
+  </section>
+
+  <p class="banner" id="sortNote" hidden></p>
+
+  <!-- ===================== 矩阵视图 ===================== -->
+  <section class="view" id="tableView">
+    <div class="tablewrap">
+      <table class="matrix" id="matrixTable">
+        <thead>
+          <tr>
+            <th class="col-cmp" scope="col">对比</th>
+            <th class="col-vendor" scope="col">厂商</th>
+            <th class="col-plan" scope="col">套餐 / 档位</th>
+            <th class="col-price" scope="col">月费</th>
+            <th class="col-billing" scope="col">计费口径</th>
+            <th class="col-quota" scope="col">额度</th>
+            <th class="col-unit" scope="col">单位成本</th>
+            <th class="col-eco" scope="col">生态</th>
+            <th class="col-case" scope="col">场景</th>
+            <th class="col-go" scope="col"></th>
+          </tr>
+        </thead>
+        <tbody id="matrixBody"></tbody>
+      </table>
+    </div>
+    <p class="empty" id="tableEmpty" hidden>没有符合条件的档位，试试放宽筛选条件。</p>
+  </section>
+
+  <!-- ===================== 卡片视图 ===================== -->
+  <section class="view" id="cardView" hidden>
+    <div class="grid" id="cardGrid"></div>
+    <p class="empty" id="cardEmpty" hidden>没有符合条件的套餐。</p>
+  </section>
+
+  <!-- ===================== 口径说明 ===================== -->
+  <section class="explain" id="how">
+    <h2>计费口径是怎么折算的</h2>
+    <div class="explain__grid" id="billingExplain"></div>
+    <p class="explain__note" id="estNote"></p>
+  </section>
+
+</main>
+
+<!-- ===================== 对比栏 ===================== -->
+<div class="comparebar" id="compareBar" hidden>
+  <div class="shell comparebar__inner">
+    <span class="comparebar__label">已选 <b id="cmpCount">0</b> / 4 个档位</span>
+    <ul class="comparebar__list" id="cmpList"></ul>
+    <div class="comparebar__actions">
+      <button class="btn btn--ghost" id="cmpClear" type="button">清空</button>
+      <button class="btn btn--primary" id="cmpGo" type="button">开始对比</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 对比面板 ===================== -->
+<div class="overlay" id="cmpOverlay" hidden>
+  <div class="panel panel--wide" role="dialog" aria-modal="true" aria-label="档位对比">
+    <header class="panel__head">
+      <h2>档位对比</h2>
+      <button class="icon-btn" data-close type="button" aria-label="关闭">&times;</button>
+    </header>
+    <div class="panel__body" id="cmpBody"></div>
+  </div>
+</div>
+
+<!-- ===================== 详情面板 ===================== -->
+<div class="overlay" id="detailOverlay" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-label="套餐详情">
+    <header class="panel__head">
+      <h2 id="detailTitle">套餐详情</h2>
+      <button class="icon-btn" data-close type="button" aria-label="关闭">&times;</button>
+    </header>
+    <div class="panel__body" id="detailBody"></div>
+  </div>
+</div>
+
+<footer class="foot">
+  <div class="shell">
+    <p id="footNote"></p>
+    <p class="foot__muted">
+      数据由人工整理转写自各厂商公开定价页，价格与优惠随时可能变动，<strong>请以厂商官网为准</strong>。
+      本站仅做聚合对比，不参与销售。
+    </p>
+  </div>
+</footer>
+
+<script src="data/plans.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,538 @@
+{
+  "_comment": "采集配置。status 字段基于 2026-09-28 的实测结果（含浏览器渲染实测），不是猜测。",
+  "_status_legend": {
+    "verified": "能稳定提取到该套餐各档位的价格，可自动比对（静态可解析，或渲染后可解析）",
+    "headline-only": "页面只有「¥X 起」这类宣传语，不是该套餐档位的真实价格，不可用",
+    "noisy": "页面有价格文本但混着优惠券/其他产品，无法定位到具体档位",
+    "spa": "纯前端渲染（返回空壳 HTML），需浏览器执行 JS",
+    "login": "需要登录后才能看到订阅价格（已实测确认渲染后仍是登录墙）",
+    "usd-pricing": "官网以美元标价，数据集里的 ¥ 值是汇率换算结果，不做自动比对",
+    "broken": "页面已失效"
+  },
+  "_measured_on": "2026-09-28",
+  "_render_legend": {
+    "render": "该来源需浏览器渲染；未配置则走静态 HTTP 抓取",
+    "tierKeyMap": "按页面上出现的档位名对齐到套餐档位，不依赖顺序",
+    "render.actions": "渲染后要执行的页面交互（click / scroll），在 waitFor 之前跑 —— 用于价格藏在 tab 后面的页面",
+    "priceDivisor": "单位换算：页面写的单位与数据集不同（如页面 ¥120/季 → 数据集 ¥40/月，用 ÷3）。页面上有明确单位，属确定性换算，允许",
+    "priceScale": "⚠ 不要用来做「折扣推断」。系数必须是页面上找得到的数字；若页面上没有，就不许用系数把差异抹平 —— 那会把假设伪装成实测。历史上 MiniMax 的 0.9 就是这么来的，已撤销"
+  },
+  "sources": [
+    {
+      "planId": "unicom-yuanjing-token-plan",
+      "url": "https://www.cucloud.cn/product/tokenplan.html",
+      "status": "verified",
+      "note": "价格与额度都在页面内联 JSON 的 title/desc 对里，title/desc 与档位一一对应，可逐档比对",
+      "mode": "positional",
+      "extract": {
+        "type": "pair",
+        "pairRe": "\"title\":\"([^\"]{0,80})\",\"desc\":\"([^\"]{0,200})\"",
+        "filter": "个人版价格",
+        "priceRe": "([0-9][0-9,]*(?:\\.[0-9]+)?)\\s*元/月",
+        "quotaRe": "额度：([^\"\\\\]{0,40})"
+      },
+      "tiers": [
+        "unicom-yuanjing-token-plan-lite",
+        "unicom-yuanjing-token-plan-pro",
+        "unicom-yuanjing-token-plan-max"
+      ],
+      "fixture": "unicom-yuanjing.html"
+    },
+    {
+      "planId": "volcengine-agent-plan",
+      "url": "https://www.volcengine.com/activity/agentplan",
+      "status": "headline-only",
+      "note": "渲染后仍只有「9.9 元起」宣传语，其余三档（49.9/500/1000）未在页面出现，需人工核对",
+      "extract": {
+        "type": "manual"
+      },
+      "render": {
+        "waitFor": "9.9"
+      },
+      "tiers": [
+        "volcengine-agent-plan-small",
+        "volcengine-agent-plan-medium",
+        "volcengine-agent-plan-large",
+        "volcengine-agent-plan-max"
+      ],
+      "fixture": "volcengine-agent.html"
+    },
+    {
+      "planId": "volcengine-coding-plan",
+      "url": "https://www.volcengine.com/activity/codingplan",
+      "status": "headline-only",
+      "note": "同上，「9.9 元起」与 Lite 档吻合，Pro 档 49.9 未在页面出现",
+      "extract": {
+        "type": "manual"
+      },
+      "render": {
+        "waitFor": "9.9"
+      },
+      "tiers": [
+        "volcengine-coding-plan-lite",
+        "volcengine-coding-plan-pro"
+      ]
+    },
+    {
+      "planId": "kwaikat-coding-plan",
+      "url": "https://www.streamlake.com/marketing/coding-plan",
+      "status": "broken",
+      "note": "2026-09-28 复核：该营销页已**下线**，不是改版换址 —— /marketing/coding-plan 的四种变体（无 www / 尾斜杠 / 首字母大写 / 带查询参数）实测全部 404，且该路由已不在站点地图里（sitemap 426 条、lastmod 为当天）。更值得记的是：万擎产品页 https://www.streamlake.com/product/wanqing 的「热卖中」位至今仍链向这个死链（其 __NEXT_DATA__ 里 link 即此地址）—— 官方自己在推广一个 404。当前不存在任何公开定价页：控制台 console.streamlake.com 是 1243 B 纯客户端空壳（需登录）；万擎 66 篇文档全文既无「Prompts」也无「¥」，文档站不含定价。另据 2026-07-16 第三方文章（腾讯云开发者社区 article/2710679），该套餐四档为 $5/$10/$20/$50 每月、额度 40/100/300/1000 Prompts/5h —— 若属实，本站的 ¥29/70/140/350 属人民币口径，需按 Cursor/OpenCode 的 usd-pricing 先例重新定性，待独立核实。",
+      "extract": {
+        "type": "manual"
+      },
+      "tiers": [
+        "kwaikat-coding-plan-mini",
+        "kwaikat-coding-plan-starter",
+        "kwaikat-coding-plan-pro",
+        "kwaikat-coding-plan-max"
+      ]
+    },
+    {
+      "planId": "mthreads-ai-coding-plan",
+      "url": "https://code.mthreads.com/",
+      "status": "verified",
+      "note": "原为 518 字节空壳；渲染后档位名独占一行，价格与「倍数用量」描述齐全。页面标季度价，数据集按月均。",
+      "mode": "positional",
+      "render": {
+        "waitFor": "Lite Plan"
+      },
+      "fixtureText": "render-mthreads.txt",
+      "extract": {
+        "type": "blocks",
+        "on": "text",
+        "blockRe": "(?:^|\\n)[ \\t]*(Free Trial|Lite Plan|Pro Plan|Max Plan)[ \\t]*(?=\\r?\\n)",
+        "priceRe": "[¥￥]\\s*([0-9][0-9,]*(?:\\.[0-9]+)?)",
+        "quotaRe": "(Claude Pro 套餐的 [0-9]+ ?倍用量|Lite Plan 的 [0-9]+ ?倍用量|Pro Plan 的 [0-9]+ ?倍用量|每日限量 [0-9]+ 名开发者)",
+        "priceDivisor": 3,
+        "scaleNote": "页面为季度价，除以 3 换算为月均（¥120/季 → ¥40/月）",
+        "maxBlock": 400
+      },
+      "tierKeyMap": {
+        "Free Trial": "mthreads-ai-coding-plan-free",
+        "Lite Plan": "mthreads-ai-coding-plan-lite",
+        "Pro Plan": "mthreads-ai-coding-plan-pro",
+        "Max Plan": "mthreads-ai-coding-plan-max"
+      },
+      "tiers": [
+        "mthreads-ai-coding-plan-free",
+        "mthreads-ai-coding-plan-lite",
+        "mthreads-ai-coding-plan-pro",
+        "mthreads-ai-coding-plan-max"
+      ]
+    },
+    {
+      "planId": "cursor-plan",
+      "url": "https://cursor.com/cn/pricing",
+      "status": "usd-pricing",
+      "note": "官网以美元标价。2026-09-28 实测：页面上 Pro/Pro+/Ultra 是切换 tab，点了也不会换出价格（点击能命中，但卡片上的 $20 不变），Pro+/Ultra 的价在可见文本里拿不到。但**页面内嵌的 schema.org 结构化数据里一直有全量报价**：Hobby $0 / Pro $20 / Pro+ $60 / Ultra $200 / Teams $40。用它绕开了整类「价格要交互才出现」的问题，而且静态 HTML 里就有（348KB），**不需要浏览器渲染**。Teams 是另一条产品线（本站数据集未建模该套餐），列入 ignore。美元价不参与人民币比对，只在报告里做一致性记录。",
+      "extract": {
+        "type": "jsonld",
+        "ignore": [
+          "Teams"
+        ]
+      },
+      "tierKeyMap": {
+        "Hobby": "cursor-plan-hobby",
+        "Pro": "cursor-plan-pro",
+        "Pro+": "cursor-plan-pro-plus",
+        "Ultra": "cursor-plan-ultra"
+      },
+      "tiers": [
+        "cursor-plan-hobby",
+        "cursor-plan-pro",
+        "cursor-plan-pro-plus",
+        "cursor-plan-ultra"
+      ]
+    },
+    {
+      "planId": "jdcloud-coding-plan",
+      "url": "https://docs.jdcloud.com/cn/jdaip/Specialoffer",
+      "status": "noisy",
+      "note": "【2026-09-28 核实·一手官方活动规则页】原入口 https://www.jdcloud.com/cn/pages/codingplan 已 302 重定向到 /cn/pages/cloudpromotion（「AI焕新季」通用促销页），不再是 Coding Plan 页 —— 所以之前两轮渲染都只抓到云主机促销，不是渲染失败，是入口漂移。现改用官方活动规则页。该页写明「新用户首购特惠套餐每日限量发放，每日上午 10:30 限量开放新用户首购特惠名额，先到先得」= 在售但**限量**（限量的是首购优惠名额，不是套餐本身）。注意：本页只给首购价 Lite 7.9 元 / Pro 39.9 元，本库记录的 ¥40 / ¥200 是**续费价**，本页无法提取，故 extract 仍为 manual。",
+      "extract": {
+        "type": "manual"
+      },
+      "render": {
+        "waitFor": "元"
+      },
+      "tiers": [
+        "jdcloud-coding-plan-lite",
+        "jdcloud-coding-plan-pro"
+      ]
+    },
+    {
+      "planId": "tencent-hy-token-plan",
+      "url": "https://cloud.tencent.com/act/pro/tokenplan",
+      "status": "verified",
+      "note": "原判「仅宣传语（39元/月起）」是错的：活动页默认展示的就是 Hy 系列四档卡片，但价格只在**渲染后**的可见文本里（静态 HTML 里没有），所以早期静态抓取只看到宣传语。2026-09-28 渲染实测四档 28/78/238/468，与数据集完全吻合。注意页面额度单位是「积分」（每订阅月 560/1560/4760/9360），与数据集记的 Token 数额不是同一口径，故本来源只提取价格、不比对额度。",
+      "mode": "positional",
+      "render": {
+        "waitFor": "日常价"
+      },
+      "fixtureText": "render-tencent-hy.txt",
+      "extract": {
+        "type": "blocks",
+        "on": "text",
+        "blockRe": "(?:^|\\n)[ \\t]*(Hy 个人版–(?:体验|基础|进阶|专业)套餐（(?:Lite|Standard|Pro|Max)）)[ \\t]*(?=\\r?\\n)",
+        "priceRe": "日常价[:：]\\s*([0-9][0-9,]*)",
+        "maxBlock": 400
+      },
+      "tierKeyMap": {
+        "Hy 个人版–体验套餐（Lite）": "tencent-hy-token-plan-lite",
+        "Hy 个人版–基础套餐（Standard）": "tencent-hy-token-plan-standard",
+        "Hy 个人版–进阶套餐（Pro）": "tencent-hy-token-plan-pro",
+        "Hy 个人版–专业套餐（Max）": "tencent-hy-token-plan-max"
+      },
+      "tiers": [
+        "tencent-hy-token-plan-lite",
+        "tencent-hy-token-plan-standard",
+        "tencent-hy-token-plan-pro",
+        "tencent-hy-token-plan-max"
+      ],
+      "fixture": "tencent-tokenplan.html"
+    },
+    {
+      "planId": "tencent-general-token-plan",
+      "url": "https://cloud.tencent.com/act/pro/tokenplan",
+      "status": "verified",
+      "note": "与 Hy 系列共用同一活动页，价格藏在 tab 后面：默认只渲染 Hy 系列，必须先点「通用 Token Plan」才会出现 39/99/299/599。2026-09-28 实测点击后精确新增这四个金额，与数据集吻合。档位名是「个人版–体验套餐（Lite）」这种（无 Hy 前缀），且 blockRe 要求整行独占，所以不会误吃 Hy 系列的卡片。waitFor 用「集成主流国产模型」——它只在通用系列卡片里出现，能真正证明 tab 切过去了（若改用档位名会假命中：「个人版–体验套餐（Lite）」是 Hy 那行的子串）。页面额度单位是「积分」（780/1980/5980/11980 每订阅月），与数据集的 Token 口径不同，故只提取价格。",
+      "mode": "positional",
+      "render": {
+        "actions": [
+          {
+            "click": "text=通用 Token Plan",
+            "wait": 1500
+          }
+        ],
+        "waitFor": "集成主流国产模型",
+        "waitForMax": 20000
+      },
+      "fixtureText": "render-tencent-general.txt",
+      "extract": {
+        "type": "blocks",
+        "on": "text",
+        "blockRe": "(?:^|\\n)[ \\t]*(个人版–(?:体验|基础|进阶|专业)套餐（(?:Lite|Standard|Pro|Max)）)[ \\t]*(?=\\r?\\n)",
+        "priceRe": "日常价[:：]\\s*([0-9][0-9,]*)",
+        "maxBlock": 400
+      },
+      "tierKeyMap": {
+        "个人版–体验套餐（Lite）": "tencent-general-token-plan-lite",
+        "个人版–基础套餐（Standard）": "tencent-general-token-plan-standard",
+        "个人版–进阶套餐（Pro）": "tencent-general-token-plan-pro",
+        "个人版–专业套餐（Max）": "tencent-general-token-plan-max"
+      },
+      "tiers": [
+        "tencent-general-token-plan-lite",
+        "tencent-general-token-plan-standard",
+        "tencent-general-token-plan-pro",
+        "tencent-general-token-plan-max"
+      ],
+      "fixture": "tencent-tokenplan.html"
+    },
+    {
+      "planId": "xiaomi-mimo-token-plan",
+      "url": "https://platform.xiaomimimo.com/console/plan-manage",
+      "status": "login",
+      "note": "控制台页面，未登录只返回 8.8KB 壳",
+      "extract": {
+        "type": "manual"
+      },
+      "tiers": [
+        "xiaomi-mimo-token-plan-lite",
+        "xiaomi-mimo-token-plan-standard",
+        "xiaomi-mimo-token-plan-pro",
+        "xiaomi-mimo-token-plan-max"
+      ]
+    },
+    {
+      "planId": "aliyun-bailian-token-plan",
+      "url": "https://www.aliyun.com/benefit/scene/tokenplan",
+      "status": "verified",
+      "note": "页面出现「139元/月，超量88折」，与本站 Standard 档(¥139) 吻合。页面不区分档位，故只做一致性确认",
+      "mode": "byValue",
+      "extract": {
+        "type": "regex",
+        "patterns": [
+          {
+            "re": "([0-9][0-9,]*(?:\\.[0-9]+)?)\\s*元/月",
+            "flags": "g",
+            "label": "元/月"
+          }
+        ]
+      },
+      "tiers": [
+        "aliyun-bailian-token-plan-lite",
+        "aliyun-bailian-token-plan-standard",
+        "aliyun-bailian-token-plan-pro"
+      ],
+      "fixture": "aliyun-bailian.html"
+    },
+    {
+      "planId": "aliyun-bailian-coding-plan",
+      "url": "https://www.aliyun.com/benefit/scene/codingplan",
+      "status": "noisy",
+      "note": "与上面共用同一活动页，98 元起/139 元/月混在一起，需人工区分是哪个套餐。⚠ **2026-09-28 补核（一手帮助中心）**：阿里云《Token Plan 概述》https://help.aliyun.com/zh/model-studio/token-plan-overview （更新于 2026-09-22）的「关于 Coding Plan」一节写明：「Coding Plan 和 Token Plan 是两个独立的订阅产品，两者之间无法迁移或升级。Coding Plan Lite 已于 2026 年 3 月 20 日停止新购，2026 年 4 月 13 日停止续费和升级；Coding Plan Pro 为限量抢购，库存售罄后不再补充。推荐使用 Token Plan。」本站该条只建模了 Pro（¥200/月 + 每 5 小时 6,000 次 / 每周 45,000 次 / 每月 90,000 次请求），**其新购状态为「限量抢购」，非正常在售**。",
+      "extract": {
+        "type": "manual"
+      },
+      "tiers": [
+        "aliyun-bailian-coding-plan-pro"
+      ]
+    },
+    {
+      "planId": "iflytek-astron-coding-plan",
+      "url": "https://maas.xfyun.cn/packageSubscription",
+      "status": "login",
+      "note": "原判为 spa；2026-09-28 渲染实测：页面直接跳到登录页（只渲染出「立即注册 / 微信扫码手机快捷登录」），未登录拿不到价格，只能人工录入",
+      "extract": {
+        "type": "manual"
+      },
+      "render": {
+        "waitFor": "登录"
+      },
+      "tiers": [
+        "iflytek-astron-coding-plan-pro-sku",
+        "iflytek-astron-coding-plan-high-efficiency"
+      ]
+    },
+    {
+      "planId": "kimi-code-plan",
+      "url": "https://www.kimi.com/membership/pricing",
+      "status": "verified",
+      "note": "原为 18.5KB 空壳；渲染后四档价格（¥39/79/159/559）与数据集完全吻合。档位名已按官网（Go/Plus/Pro/Max）对齐。⚠ **2026-09-28 补核**：2026-07-19 官方发布《关于算力紧缺与会员暂停开放的说明》，宣布**即日起暂停 C 端新用户订阅**，已有算力优先保障已订阅用户，并将拆分 Kimi 主权益（Web/APP/Work）与 Kimi Code 权益（多家媒体转引官方原文，如新华财经 cnfin.com/gs-lb/detail/20260720/4442734_1.html）。公告称「随着新算力陆续到位，将逐步开放更多订阅名额直至全面恢复正常订阅」，因此**可能已恢复**——当前是否可购需渲染核验，不能凭 7 月的公告下今天的结论。本页今日实测仍是纯 SPA 空壳（18.5KB / 正文 122 字符）。",
+      "mode": "positional",
+      "render": {
+        "waitFor": "按年计费"
+      },
+      "fixtureText": "render-kimi.txt",
+      "extract": {
+        "type": "blocks",
+        "on": "text",
+        "blockRe": "(?:^|\\n)[ \\t]*(Go|Plus|Pro|Max)[ \\t]*(?=\\r?\\n)",
+        "priceRe": "[¥￥]\\s*([0-9][0-9,]*(?:\\.[0-9]+)?)",
+        "captureListPrice": true,
+        "maxBlock": 300
+      },
+      "tierKeyMap": {
+        "Go": "kimi-code-plan-go",
+        "Plus": "kimi-code-plan-plus",
+        "Pro": "kimi-code-plan-pro",
+        "Max": "kimi-code-plan-max"
+      },
+      "tiers": [
+        "kimi-code-plan-go",
+        "kimi-code-plan-plus",
+        "kimi-code-plan-pro",
+        "kimi-code-plan-max"
+      ]
+    },
+    {
+      "planId": "baidu-qianfan-coding-plan",
+      "url": "https://cloud.baidu.com/doc/qianfan/s/imlg0beiu",
+      "status": "verified",
+      "note": "2026-09-28 更正来源地址：原先指向 https://cloud.baidu.com/product/codingplan.html，而那个地址今天售的是**另一个产品**——「百度千帆 Token Plan 个人版」（页内 title 即如此，4 档 Mini/Lite/Pro/Max，积分制与 Token 制双口径，页面上写着「完全取消 Coding Plan 原有的三层限流体系」）。Coding Plan 的价格与额度都没变，所以这不是数据错误，而是**来源 URL 指错了产品**。⚠ **同日补核（一手公告，修正上一版结论）**：两者**并非并行在售**。官方公告《Token Plan 个人版上线及 Coding Plan 停售公告》https://cloud.baidu.com/doc/qianfan/s/Fmrexuejc （更新于 2026-07-10）明确：「北京时间 2026 年 7 月 13 日 10:00:00 起，Token Plan 个人版全面开放购买，Coding Plan 全档位停止购买」；已购且有效期内的 Coding Plan 功能不变、可用到服务周期结束，存量用户可通过一键迁移通道升级至 Token Plan。也就是说 —— **本页的 ¥40/¥200 仍然「对」，但它描述的是存量用户的价格，不是新用户能买到的价格。** 这比涨价更难发现：价格没变，可购买性变了。改用官方文档页：¥40/¥200 与「每 5 小时/每周/每订阅月」三档请求限额都在静态 HTML 表格里，无需浏览器渲染。⚠ Token Plan 若纳入数据集必须作为**独立套餐**，绝不可与此条互相比对——两者的价格梯子恰好同为 40/200，混淆会产出一堆「看起来正确」的假确认，比报错更危险。",
+      "mode": "positional",
+      "fixture": "qianfan-codingplan-doc.html",
+      "extract": {
+        "type": "blocks",
+        "on": "html",
+        "blockRe": "(?:^|\\n)[ \\t]*(Coding Plan Lite|Coding Plan Pro)[ \\t]*(?=\\r?\\n)",
+        "priceRe": "[¥￥]\\s*([0-9][0-9,]*(?:\\.[0-9]+)?)\\s*/\\s*月",
+        "quotaRe": "每订阅月[：:]\\s*最多约\\s*([0-9][0-9,]*)\\s*次请求",
+        "maxBlock": 700
+      },
+      "tierKeyMap": {
+        "Coding Plan Lite": "baidu-qianfan-coding-plan-lite",
+        "Coding Plan Pro": "baidu-qianfan-coding-plan-pro"
+      },
+      "tiers": [
+        "baidu-qianfan-coding-plan-lite",
+        "baidu-qianfan-coding-plan-pro"
+      ]
+    },
+    {
+      "planId": "baidu-qianfan-token-plan",
+      "url": "https://cloud.baidu.com/product/codingplan.html",
+      "status": "verified",
+      "note": "本库**第二条**百度套餐，与 Coding Plan 并行在售、不可互相替代（这一页的 <title> 就是「百度千帆Token Plan个人版」，页内自述「完全取消 Coding Plan 原有的三层限流体系」）。页面上每档有「积分制 / Token 制」两张卡，档位名完全相同，靠 filter:'Tokens' 只取 Token 制那一张 —— 积分与 Token 不成固定比例（跨档 7143/6364/5111/4242），换算不了，所以只能二选一建模，本库选 Token 制。priceKeys 用 deletePrice（常规价），与 price_cny 口径一致：首购五折后的 4.9/19.9/99.9/299.9 只写在 price_note 里，不进价格字段。⚠ 它的常规价 40/200 与 Coding Plan 恰好同价，两者混算会产出「看起来正确」的假确认。",
+      "mode": "positional",
+      "fixture": "cards-qianfan.html",
+      "extract": {
+        "type": "cards",
+        "cardKeys": [
+          "paramsTable"
+        ],
+        "nameKeys": [
+          "title"
+        ],
+        "priceKeys": [
+          "deletePrice"
+        ],
+        "unitKeys": [
+          "unit"
+        ],
+        "quotaRe": "\"hotTags\"\\s*:\\s*\\[\\s*\\{\\s*\"text\"\\s*:\\s*\"([^\"]{1,40})\"",
+        "filter": "Tokens",
+        "maxLen": 3000
+      },
+      "tierKeyMap": {
+        "Mini": "baidu-qianfan-token-plan-mini",
+        "Lite": "baidu-qianfan-token-plan-lite",
+        "Pro": "baidu-qianfan-token-plan-pro",
+        "Max": "baidu-qianfan-token-plan-max"
+      },
+      "tiers": [
+        "baidu-qianfan-token-plan-mini",
+        "baidu-qianfan-token-plan-lite",
+        "baidu-qianfan-token-plan-pro",
+        "baidu-qianfan-token-plan-max"
+      ]
+    },
+    {
+      "planId": "minimax-token-plan",
+      "url": "https://platform.minimaxi.com/subscribe/token-plan",
+      "status": "verified",
+      "note": "原为 74.5KB 无价格；渲染后页面底部对比表给出月价 ¥49/119/469，与数据集一致，提取时只认「¥X / 月」形态，自动跳过顶部年付价（年付档写作「￥588 → ￥490 每年，按年订阅」，没有 /月，天然不匹配）。此处曾配过 priceScale: 0.9，理由是「数据集记的是 9 折价」——但 2026-09-28 点开「连续包月」tab 实测，两个 tab 下月度价都是 ¥49/119/469，全页没有 9 折字样：0.9 是从数据集反推出来的系数，属于拟合而非采集，已撤除（数据集价格同时改按官网）。额度单位也补记了官网原文（月度约 6/18/71 亿+ Token）。",
+      "mode": "positional",
+      "render": {
+        "waitFor": "订阅计划"
+      },
+      "fixtureText": "render-minimax.txt",
+      "extract": {
+        "type": "blocks",
+        "on": "text",
+        "blockRe": "(?:^|\\n)[ \\t]*(Plus|Max|Ultra)[ \\t]*(?=\\r?\\n)",
+        "priceRe": "[¥￥]\\s*([0-9][0-9,]*)\\s*/\\s*月",
+        "quotaRe": "月度约 ([0-9]+ ?亿\\+? ?token)",
+        "maxBlock": 400
+      },
+      "tierKeyMap": {
+        "Plus": "minimax-token-plan-plus",
+        "Max": "minimax-token-plan-max",
+        "Ultra": "minimax-token-plan-ultra"
+      },
+      "tiers": [
+        "minimax-token-plan-plus",
+        "minimax-token-plan-max",
+        "minimax-token-plan-ultra"
+      ]
+    },
+    {
+      "planId": "ucloud-agent-plan",
+      "url": "https://console.compshare.cn/light-gpu/model-subscription",
+      "status": "login",
+      "note": "原判为 spa；2026-09-28 渲染实测：渲染出「短信登录 / 账号登录 / 获取验证码」，是控制台登录墙（域名即 console），价格必须登录后人工录入",
+      "extract": {
+        "type": "manual"
+      },
+      "render": {
+        "waitFor": "登录"
+      },
+      "tiers": [
+        "ucloud-agent-plan-mini",
+        "ucloud-agent-plan-lite",
+        "ucloud-agent-plan-basic",
+        "ucloud-agent-plan-pro",
+        "ucloud-agent-plan-max",
+        "ucloud-agent-plan-ultra"
+      ]
+    },
+    {
+      "planId": "huawei-token-plan",
+      "url": "https://www.huaweicloud.com/agentorchard/tokenplan.html",
+      "status": "verified",
+      "note": "原为 128KB 但价格前端渲染；渲染后四档价格（¥59/149/399/799）与额度（5000万/1.3亿/3.8亿/8.8亿 Tokens）与数据集逐字吻合，是全库最干净的可自动比对来源之一。2026-09-28 改走 cards 策略：页面把每档套餐序列化成一张卡片对象塞在 <textarea class=\"activity-visible-data\"> 里（JS 读它渲染），字段是 {header.titlePc, description.specs[].spec, price:{currency,origin,current,unit}}。这比原来的「渲染文本按独占一行分块」更结实——不再依赖可见文本的行序，页面上换布局也不会错位；实测价格与原策略完全一致（零数据变更）。旧的渲染文本样本 render-huawei.txt 保留，自测里用它和 cards 结果做交叉核对。",
+      "mode": "positional",
+      "render": {
+        "waitFor": "每订阅月"
+      },
+      "fixture": "cards-huawei.html",
+      "extract": {
+        "type": "cards",
+        "cardKeys": [
+          "titlePc"
+        ],
+        "nameKeys": [
+          "titlePc"
+        ],
+        "priceKeys": [
+          "current"
+        ],
+        "unitKeys": [
+          "unit"
+        ],
+        "listPriceKeys": [
+          "origin"
+        ],
+        "quotaRe": "\"spec\"\\s*:\\s*\"([^\"]{1,40})\"",
+        "maxLen": 4000
+      },
+      "tierKeyMap": {
+        "Lite": "huawei-token-plan-lite",
+        "Standard": "huawei-token-plan-standard",
+        "Pro": "huawei-token-plan-pro",
+        "Max": "huawei-token-plan-max"
+      },
+      "tiers": [
+        "huawei-token-plan-lite",
+        "huawei-token-plan-standard",
+        "huawei-token-plan-pro",
+        "huawei-token-plan-max"
+      ]
+    },
+    {
+      "planId": "opencode-go",
+      "url": "https://opencode.ai/go",
+      "status": "usd-pricing",
+      "note": "渲染后可见「订阅 Go $10/月」（含一张模型 × 预估请求数 × 月度额度的对照表）。官网为美元标价，数据集 ¥70 是汇率换算，不参与自动比对。",
+      "render": {
+        "waitFor": "订阅"
+      },
+      "extract": {
+        "type": "blocks",
+        "on": "text",
+        "blockRe": "(?:^|\\n)[ \\t]*(Go)[ \\t]*(?=\\r?\\n)",
+        "priceRe": "\\$\\s*([0-9][0-9,]*(?:\\.[0-9]+)?)",
+        "currency": "USD",
+        "maxBlock": 300
+      },
+      "tierKeyMap": {
+        "Go": "opencode-go-standard"
+      },
+      "tiers": [
+        "opencode-go-standard"
+      ]
+    },
+    {
+      "planId": "zhipu-glm-coding-plan",
+      "url": "https://www.bigmodel.cn/glm-coding",
+      "status": "verified",
+      "note": "原为 4.3KB 空壳；渲染后三档价格与额度齐全。注意：页面同时显示「季付 8 折实付价」与「月付原价」（¥118/538/1078），数据集记的是 8 折实付价，本配置取块内第一个价格即实付价，第二个为原价一并记录。⚠ **2026-09-28 补核**：该套餐 2026-01-23 起曾「暂时限量发售、每日可售配额降为 20%、每天 10 点更新额度」（智谱限售公告，AASTOCKS 2026-01-21 报道），至 **2026-07-31 已结束限售**、三档均恢复「立即订阅」；同期月付原价由 Lite 49/Pro 149/Max 469 上调至 118/538/1078，计费口径也从 prompts 改为积分——**本站记录已是新方案**（额度写作「每周 10,000 积分」、原价 118/538/1078 与页面一致），因此本条无需改价。价格史与限售信息来自二手来源（网易科技/今日头条），引用以官网为准。",
+      "mode": "positional",
+      "render": {
+        "waitFor": "立即订阅"
+      },
+      "fixtureText": "render-zhipu.txt",
+      "extract": {
+        "type": "blocks",
+        "on": "text",
+        "blockRe": "(?:^|\\n)[ \\t]*(Lite|Pro|Max)[ \\t]*(?=\\r?\\n)",
+        "priceRe": "[¥￥]\\s*([0-9][0-9,]*(?:\\.[0-9]+)?)",
+        "captureListPrice": true,
+        "quotaRe": "每周 ([0-9,]+) 积分",
+        "maxBlock": 420
+      },
+      "tierKeyMap": {
+        "Lite": "zhipu-glm-coding-plan-lite",
+        "Pro": "zhipu-glm-coding-plan-pro",
+        "Max": "zhipu-glm-coding-plan-max"
+      },
+      "tiers": [
+        "zhipu-glm-coding-plan-lite",
+        "zhipu-glm-coding-plan-pro",
+        "zhipu-glm-coding-plan-max"
+      ]
+    }
+  ]
+}

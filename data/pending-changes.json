@@ -1,0 +1,974 @@
+{
+  "generated_at": "2026-09-28T10:46:03.188Z",
+  "dataset_snapshot": "2026-09-28",
+  "summary": {
+    "sources_checked": 21,
+    "sources_with_data": 11,
+    "pending_changes": 0,
+    "needs_review": 0,
+    "confirmed_tiers": 36,
+    "unassigned_candidates": 0,
+    "by_status": {
+      "verified": 11,
+      "headline-only": 2,
+      "broken": 1,
+      "usd-pricing": 2,
+      "noisy": 2,
+      "login": 3
+    }
+  },
+  "instruction": "本文件只是报告，不会自动改数据。changes 里确认无误的把 decision 改成 \"apply\"，再运行 node codingplan/scripts/collect/apply.js；needs_review 必须人工比对官网。confirmed 表示「页面上仍能找到与当前价格一致的数字」，属于一致性证据，不是变更。",
+  "changes": [],
+  "needs_review": [],
+  "quota_notes": [],
+  "currency_notes": [],
+  "per_source": [
+    {
+      "planId": "unicom-yuanjing-token-plan",
+      "planName": "联通元景 Token Plan",
+      "url": "https://www.cucloud.cn/product/tokenplan.html",
+      "status": "verified",
+      "mode": "positional",
+      "httpStatus": "fixture",
+      "strategy": "pair",
+      "entryCount": 3,
+      "hasData": true,
+      "changes": [],
+      "confirmed": [
+        {
+          "tierId": "unicom-yuanjing-token-plan-lite",
+          "tierName": "Lite",
+          "price": 15,
+          "pageLabel": "个人版价格：15元/月",
+          "rawPrice": null
+        },
+        {
+          "tierId": "unicom-yuanjing-token-plan-pro",
+          "tierName": "Pro",
+          "price": 30,
+          "pageLabel": "个人版价格：30元/月",
+          "rawPrice": null
+        },
+        {
+          "tierId": "unicom-yuanjing-token-plan-max",
+          "tierName": "Max",
+          "price": 45,
+          "pageLabel": "个人版价格：45元/月",
+          "rawPrice": null
+        }
+      ],
+      "missing": [],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "跳过 8 组非目标条目"
+      ],
+      "fetch": {
+        "status": "fixture",
+        "bytes": 10713,
+        "ms": 0,
+        "notes": [
+          "读取本地样本 unicom-yuanjing.html"
+        ],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": false
+    },
+    {
+      "planId": "volcengine-agent-plan",
+      "planName": "火山方舟 Agent Plan",
+      "url": "https://www.volcengine.com/activity/agentplan",
+      "status": "headline-only",
+      "mode": "byValue",
+      "httpStatus": "fixture",
+      "strategy": "manual",
+      "entryCount": 0,
+      "hasData": false,
+      "changes": [],
+      "confirmed": [],
+      "missing": [
+        "volcengine-agent-plan-small",
+        "volcengine-agent-plan-medium",
+        "volcengine-agent-plan-large",
+        "volcengine-agent-plan-max"
+      ],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "该来源未配置自动提取，需人工核对",
+        "未提取到任何价格候选"
+      ],
+      "fetch": {
+        "status": "fixture",
+        "bytes": 5435,
+        "ms": 0,
+        "notes": [
+          "读取本地样本 volcengine-agent.html"
+        ],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": true
+    },
+    {
+      "planId": "volcengine-coding-plan",
+      "planName": "火山方舟 Coding Plan",
+      "url": "https://www.volcengine.com/activity/codingplan",
+      "status": "headline-only",
+      "mode": "byValue",
+      "httpStatus": "fixture-missing",
+      "strategy": "manual",
+      "entryCount": 0,
+      "hasData": false,
+      "changes": [],
+      "confirmed": [],
+      "missing": [
+        "volcengine-coding-plan-lite",
+        "volcengine-coding-plan-pro"
+      ],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "离线模式：该来源未固化样本（无 fixture 配置），跳过",
+        "该来源未配置自动提取，需人工核对",
+        "未提取到任何价格候选"
+      ],
+      "fetch": {
+        "status": "fixture-missing",
+        "bytes": 0,
+        "ms": 0,
+        "notes": [],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": true
+    },
+    {
+      "planId": "kwaikat-coding-plan",
+      "planName": "KwaiKAT Coding Plan",
+      "url": "https://www.streamlake.com/marketing/coding-plan",
+      "status": "broken",
+      "mode": "byValue",
+      "httpStatus": "fixture-missing",
+      "strategy": "manual",
+      "entryCount": 0,
+      "hasData": false,
+      "changes": [],
+      "confirmed": [],
+      "missing": [
+        "kwaikat-coding-plan-mini",
+        "kwaikat-coding-plan-starter",
+        "kwaikat-coding-plan-pro",
+        "kwaikat-coding-plan-max"
+      ],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "离线模式：该来源未固化样本（无 fixture 配置），跳过",
+        "该来源未配置自动提取，需人工核对",
+        "未提取到任何价格候选"
+      ],
+      "fetch": {
+        "status": "fixture-missing",
+        "bytes": 0,
+        "ms": 0,
+        "notes": [],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": false
+    },
+    {
+      "planId": "mthreads-ai-coding-plan",
+      "planName": "摩尔线程 AI Coding Plan",
+      "url": "https://code.mthreads.com/",
+      "status": "verified",
+      "mode": "positional",
+      "httpStatus": "fixture",
+      "strategy": "blocks",
+      "entryCount": 4,
+      "hasData": true,
+      "changes": [],
+      "confirmed": [
+        {
+          "tierId": "mthreads-ai-coding-plan-free",
+          "tierName": "Free Trial",
+          "price": 0,
+          "pageLabel": "Free Trial",
+          "rawPrice": 0
+        },
+        {
+          "tierId": "mthreads-ai-coding-plan-lite",
+          "tierName": "Lite Plan",
+          "price": 40,
+          "pageLabel": "Lite Plan",
+          "rawPrice": 120
+        },
+        {
+          "tierId": "mthreads-ai-coding-plan-pro",
+          "tierName": "Pro Plan",
+          "price": 200,
+          "pageLabel": "Pro Plan",
+          "rawPrice": 600
+        },
+        {
+          "tierId": "mthreads-ai-coding-plan-max",
+          "tierName": "Max Plan",
+          "price": 400,
+          "pageLabel": "Max Plan",
+          "rawPrice": 1200
+        }
+      ],
+      "missing": [],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "价格已换算（页面 0 → 口径 0，系数 1/3）：页面为季度价，除以 3 换算为月均（¥120/季 → ¥40/月）"
+      ],
+      "fetch": {
+        "status": "fixture",
+        "bytes": 1891,
+        "ms": 0,
+        "notes": [
+          "读取渲染文本样本 render-mthreads.txt"
+        ],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": true
+    },
+    {
+      "planId": "cursor-plan",
+      "planName": "Cursor Plan",
+      "url": "https://cursor.com/cn/pricing",
+      "status": "usd-pricing",
+      "mode": "positional",
+      "httpStatus": "fixture-missing",
+      "strategy": "jsonld",
+      "entryCount": 0,
+      "hasData": false,
+      "changes": [],
+      "confirmed": [],
+      "missing": [
+        "cursor-plan-hobby",
+        "cursor-plan-pro",
+        "cursor-plan-pro-plus",
+        "cursor-plan-ultra"
+      ],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "离线模式：该来源未固化样本（无 fixture 配置），跳过",
+        "页面内容为空",
+        "未提取到任何价格候选"
+      ],
+      "fetch": {
+        "status": "fixture-missing",
+        "bytes": 0,
+        "ms": 0,
+        "notes": [],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": false
+    },
+    {
+      "planId": "jdcloud-coding-plan",
+      "planName": "京东云 Coding Plan",
+      "url": "https://docs.jdcloud.com/cn/jdaip/Specialoffer",
+      "status": "noisy",
+      "mode": "byValue",
+      "httpStatus": "fixture-missing",
+      "strategy": "manual",
+      "entryCount": 0,
+      "hasData": false,
+      "changes": [],
+      "confirmed": [],
+      "missing": [
+        "jdcloud-coding-plan-lite",
+        "jdcloud-coding-plan-pro"
+      ],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "离线模式：该来源未固化样本（无 fixture 配置），跳过",
+        "该来源未配置自动提取，需人工核对",
+        "未提取到任何价格候选"
+      ],
+      "fetch": {
+        "status": "fixture-missing",
+        "bytes": 0,
+        "ms": 0,
+        "notes": [],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": true
+    },
+    {
+      "planId": "tencent-hy-token-plan",
+      "planName": "腾讯云 Hy Token Plan",
+      "url": "https://cloud.tencent.com/act/pro/tokenplan",
+      "status": "verified",
+      "mode": "positional",
+      "httpStatus": "fixture",
+      "strategy": "blocks",
+      "entryCount": 4,
+      "hasData": true,
+      "changes": [],
+      "confirmed": [
+        {
+          "tierId": "tencent-hy-token-plan-lite",
+          "tierName": "Lite 体验套餐",
+          "price": 28,
+          "pageLabel": "Hy 个人版–体验套餐（Lite）",
+          "rawPrice": null
+        },
+        {
+          "tierId": "tencent-hy-token-plan-standard",
+          "tierName": "Standard 基础套餐",
+          "price": 78,
+          "pageLabel": "Hy 个人版–基础套餐（Standard）",
+          "rawPrice": null
+        },
+        {
+          "tierId": "tencent-hy-token-plan-pro",
+          "tierName": "Pro 进阶套餐",
+          "price": 238,
+          "pageLabel": "Hy 个人版–进阶套餐（Pro）",
+          "rawPrice": null
+        },
+        {
+          "tierId": "tencent-hy-token-plan-max",
+          "tierName": "Max 专业套餐",
+          "price": 468,
+          "pageLabel": "Hy 个人版–专业套餐（Max）",
+          "rawPrice": null
+        }
+      ],
+      "missing": [],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [],
+      "fetch": {
+        "status": "fixture",
+        "bytes": 3077,
+        "ms": 0,
+        "notes": [
+          "读取本地样本 tencent-tokenplan.html",
+          "读取渲染文本样本 render-tencent-hy.txt"
+        ],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": true
+    },
+    {
+      "planId": "tencent-general-token-plan",
+      "planName": "腾讯云通用 Token Plan",
+      "url": "https://cloud.tencent.com/act/pro/tokenplan",
+      "status": "verified",
+      "mode": "positional",
+      "httpStatus": "fixture",
+      "strategy": "blocks",
+      "entryCount": 4,
+      "hasData": true,
+      "changes": [],
+      "confirmed": [
+        {
+          "tierId": "tencent-general-token-plan-lite",
+          "tierName": "Lite 体验套餐",
+          "price": 39,
+          "pageLabel": "个人版–体验套餐（Lite）",
+          "rawPrice": null
+        },
+        {
+          "tierId": "tencent-general-token-plan-standard",
+          "tierName": "Standard 基础套餐",
+          "price": 99,
+          "pageLabel": "个人版–基础套餐（Standard）",
+          "rawPrice": null
+        },
+        {
+          "tierId": "tencent-general-token-plan-pro",
+          "tierName": "Pro 进阶套餐",
+          "price": 299,
+          "pageLabel": "个人版–进阶套餐（Pro）",
+          "rawPrice": null
+        },
+        {
+          "tierId": "tencent-general-token-plan-max",
+          "tierName": "Max 专业套餐",
+          "price": 599,
+          "pageLabel": "个人版–专业套餐（Max）",
+          "rawPrice": null
+        }
+      ],
+      "missing": [],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [],
+      "fetch": {
+        "status": "fixture",
+        "bytes": 3077,
+        "ms": 0,
+        "notes": [
+          "读取本地样本 tencent-tokenplan.html",
+          "读取渲染文本样本 render-tencent-general.txt"
+        ],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": true
+    },
+    {
+      "planId": "xiaomi-mimo-token-plan",
+      "planName": "小米 MiMo Token Plan",
+      "url": "https://platform.xiaomimimo.com/console/plan-manage",
+      "status": "login",
+      "mode": "byValue",
+      "httpStatus": "fixture-missing",
+      "strategy": "manual",
+      "entryCount": 0,
+      "hasData": false,
+      "changes": [],
+      "confirmed": [],
+      "missing": [
+        "xiaomi-mimo-token-plan-lite",
+        "xiaomi-mimo-token-plan-standard",
+        "xiaomi-mimo-token-plan-pro",
+        "xiaomi-mimo-token-plan-max"
+      ],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "离线模式：该来源未固化样本（无 fixture 配置），跳过",
+        "该来源未配置自动提取，需人工核对",
+        "未提取到任何价格候选"
+      ],
+      "fetch": {
+        "status": "fixture-missing",
+        "bytes": 0,
+        "ms": 0,
+        "notes": [],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": false
+    },
+    {
+      "planId": "aliyun-bailian-token-plan",
+      "planName": "阿里云百炼 Token Plan",
+      "url": "https://www.aliyun.com/benefit/scene/tokenplan",
+      "status": "verified",
+      "mode": "byValue",
+      "httpStatus": "fixture",
+      "strategy": "regex",
+      "entryCount": 1,
+      "hasData": true,
+      "changes": [],
+      "confirmed": [
+        {
+          "tierId": "aliyun-bailian-token-plan-standard",
+          "tierName": "Standard 版",
+          "price": 139
+        }
+      ],
+      "missing": [
+        "aliyun-bailian-token-plan-lite",
+        "aliyun-bailian-token-plan-pro"
+      ],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [],
+      "fetch": {
+        "status": "fixture",
+        "bytes": 5188,
+        "ms": 0,
+        "notes": [
+          "读取本地样本 aliyun-bailian.html"
+        ],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": false
+    },
+    {
+      "planId": "aliyun-bailian-coding-plan",
+      "planName": "阿里云百炼 Coding Plan",
+      "url": "https://www.aliyun.com/benefit/scene/codingplan",
+      "status": "noisy",
+      "mode": "byValue",
+      "httpStatus": "fixture-missing",
+      "strategy": "manual",
+      "entryCount": 0,
+      "hasData": false,
+      "changes": [],
+      "confirmed": [],
+      "missing": [
+        "aliyun-bailian-coding-plan-pro"
+      ],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "离线模式：该来源未固化样本（无 fixture 配置），跳过",
+        "该来源未配置自动提取，需人工核对",
+        "未提取到任何价格候选"
+      ],
+      "fetch": {
+        "status": "fixture-missing",
+        "bytes": 0,
+        "ms": 0,
+        "notes": [],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": false
+    },
+    {
+      "planId": "iflytek-astron-coding-plan",
+      "planName": "讯飞星辰 Astron Coding Plan",
+      "url": "https://maas.xfyun.cn/packageSubscription",
+      "status": "login",
+      "mode": "byValue",
+      "httpStatus": "fixture-missing",
+      "strategy": "manual",
+      "entryCount": 0,
+      "hasData": false,
+      "changes": [],
+      "confirmed": [],
+      "missing": [
+        "iflytek-astron-coding-plan-pro-sku",
+        "iflytek-astron-coding-plan-high-efficiency"
+      ],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "离线模式：该来源未固化样本（无 fixture 配置），跳过",
+        "该来源未配置自动提取，需人工核对",
+        "未提取到任何价格候选"
+      ],
+      "fetch": {
+        "status": "fixture-missing",
+        "bytes": 0,
+        "ms": 0,
+        "notes": [],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": true
+    },
+    {
+      "planId": "kimi-code-plan",
+      "planName": "Kimi Code Plan",
+      "url": "https://www.kimi.com/membership/pricing",
+      "status": "verified",
+      "mode": "positional",
+      "httpStatus": "fixture",
+      "strategy": "blocks",
+      "entryCount": 4,
+      "hasData": true,
+      "changes": [],
+      "confirmed": [
+        {
+          "tierId": "kimi-code-plan-go",
+          "tierName": "Go 日常使用",
+          "price": 39,
+          "pageLabel": "Go",
+          "rawPrice": null
+        },
+        {
+          "tierId": "kimi-code-plan-plus",
+          "tierName": "Plus 效率升级",
+          "price": 79,
+          "pageLabel": "Plus",
+          "rawPrice": null
+        },
+        {
+          "tierId": "kimi-code-plan-pro",
+          "tierName": "Pro 专业优选",
+          "price": 159,
+          "pageLabel": "Pro",
+          "rawPrice": null
+        },
+        {
+          "tierId": "kimi-code-plan-max",
+          "tierName": "Max 全能尊享",
+          "price": 559,
+          "pageLabel": "Max",
+          "rawPrice": null
+        }
+      ],
+      "missing": [],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "跳过 4 组非目标条目"
+      ],
+      "fetch": {
+        "status": "fixture",
+        "bytes": 3752,
+        "ms": 0,
+        "notes": [
+          "读取渲染文本样本 render-kimi.txt"
+        ],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": true
+    },
+    {
+      "planId": "baidu-qianfan-coding-plan",
+      "planName": "千帆 Coding Plan",
+      "url": "https://cloud.baidu.com/doc/qianfan/s/imlg0beiu",
+      "status": "verified",
+      "mode": "positional",
+      "httpStatus": "fixture",
+      "strategy": "blocks",
+      "entryCount": 2,
+      "hasData": true,
+      "changes": [],
+      "confirmed": [
+        {
+          "tierId": "baidu-qianfan-coding-plan-lite",
+          "tierName": "Coding Plan Lite",
+          "price": 40,
+          "pageLabel": "Coding Plan Lite",
+          "rawPrice": null
+        },
+        {
+          "tierId": "baidu-qianfan-coding-plan-pro",
+          "tierName": "Coding Plan Pro",
+          "price": 200,
+          "pageLabel": "Coding Plan Pro",
+          "rawPrice": null
+        }
+      ],
+      "missing": [],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [],
+      "fetch": {
+        "status": "fixture",
+        "bytes": 45585,
+        "ms": 0,
+        "notes": [
+          "读取本地样本 qianfan-codingplan-doc.html"
+        ],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": false
+    },
+    {
+      "planId": "baidu-qianfan-token-plan",
+      "planName": "千帆 Token Plan 个人版",
+      "url": "https://cloud.baidu.com/product/codingplan.html",
+      "status": "verified",
+      "mode": "positional",
+      "httpStatus": "fixture",
+      "strategy": "cards",
+      "entryCount": 4,
+      "hasData": true,
+      "changes": [],
+      "confirmed": [
+        {
+          "tierId": "baidu-qianfan-token-plan-mini",
+          "tierName": "Mini",
+          "price": 9.9,
+          "pageLabel": "Mini",
+          "rawPrice": null
+        },
+        {
+          "tierId": "baidu-qianfan-token-plan-lite",
+          "tierName": "Lite",
+          "price": 40,
+          "pageLabel": "Lite",
+          "rawPrice": null
+        },
+        {
+          "tierId": "baidu-qianfan-token-plan-pro",
+          "tierName": "Pro",
+          "price": 200,
+          "pageLabel": "Pro",
+          "rawPrice": null
+        },
+        {
+          "tierId": "baidu-qianfan-token-plan-max",
+          "tierName": "Max",
+          "price": 600,
+          "pageLabel": "Max",
+          "rawPrice": null
+        }
+      ],
+      "missing": [],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "跳过 4 组非目标条目"
+      ],
+      "fetch": {
+        "status": "fixture",
+        "bytes": 10587,
+        "ms": 0,
+        "notes": [
+          "读取本地样本 cards-qianfan.html"
+        ],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": false
+    },
+    {
+      "planId": "minimax-token-plan",
+      "planName": "MiniMax Token Plan",
+      "url": "https://platform.minimaxi.com/subscribe/token-plan",
+      "status": "verified",
+      "mode": "positional",
+      "httpStatus": "fixture",
+      "strategy": "blocks",
+      "entryCount": 3,
+      "hasData": true,
+      "changes": [],
+      "confirmed": [
+        {
+          "tierId": "minimax-token-plan-plus",
+          "tierName": "Plus",
+          "price": 49,
+          "pageLabel": "Plus",
+          "rawPrice": null
+        },
+        {
+          "tierId": "minimax-token-plan-max",
+          "tierName": "Max",
+          "price": 119,
+          "pageLabel": "Max",
+          "rawPrice": null
+        },
+        {
+          "tierId": "minimax-token-plan-ultra",
+          "tierName": "Ultra",
+          "price": 469,
+          "pageLabel": "Ultra",
+          "rawPrice": null
+        }
+      ],
+      "missing": [],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "跳过 3 组非目标条目"
+      ],
+      "fetch": {
+        "status": "fixture",
+        "bytes": 8049,
+        "ms": 0,
+        "notes": [
+          "读取渲染文本样本 render-minimax.txt"
+        ],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": true
+    },
+    {
+      "planId": "ucloud-agent-plan",
+      "planName": "优云智算 Agent Plan",
+      "url": "https://console.compshare.cn/light-gpu/model-subscription",
+      "status": "login",
+      "mode": "byValue",
+      "httpStatus": "fixture-missing",
+      "strategy": "manual",
+      "entryCount": 0,
+      "hasData": false,
+      "changes": [],
+      "confirmed": [],
+      "missing": [
+        "ucloud-agent-plan-mini",
+        "ucloud-agent-plan-lite",
+        "ucloud-agent-plan-basic",
+        "ucloud-agent-plan-pro",
+        "ucloud-agent-plan-max",
+        "ucloud-agent-plan-ultra"
+      ],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "离线模式：该来源未固化样本（无 fixture 配置），跳过",
+        "该来源未配置自动提取，需人工核对",
+        "未提取到任何价格候选"
+      ],
+      "fetch": {
+        "status": "fixture-missing",
+        "bytes": 0,
+        "ms": 0,
+        "notes": [],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": true
+    },
+    {
+      "planId": "huawei-token-plan",
+      "planName": "华为云 Token Plan",
+      "url": "https://www.huaweicloud.com/agentorchard/tokenplan.html",
+      "status": "verified",
+      "mode": "positional",
+      "httpStatus": "fixture",
+      "strategy": "cards",
+      "entryCount": 4,
+      "hasData": true,
+      "changes": [],
+      "confirmed": [
+        {
+          "tierId": "huawei-token-plan-lite",
+          "tierName": "Lite",
+          "price": 59,
+          "pageLabel": "Lite",
+          "rawPrice": null
+        },
+        {
+          "tierId": "huawei-token-plan-standard",
+          "tierName": "Standard",
+          "price": 149,
+          "pageLabel": "Standard",
+          "rawPrice": null
+        },
+        {
+          "tierId": "huawei-token-plan-pro",
+          "tierName": "Pro",
+          "price": 399,
+          "pageLabel": "Pro",
+          "rawPrice": null
+        },
+        {
+          "tierId": "huawei-token-plan-max",
+          "tierName": "Max",
+          "price": 799,
+          "pageLabel": "Max",
+          "rawPrice": null
+        }
+      ],
+      "missing": [],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [],
+      "fetch": {
+        "status": "fixture",
+        "bytes": 12208,
+        "ms": 0,
+        "notes": [
+          "读取本地样本 cards-huawei.html"
+        ],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": true
+    },
+    {
+      "planId": "opencode-go",
+      "planName": "OpenCode Go",
+      "url": "https://opencode.ai/go",
+      "status": "usd-pricing",
+      "mode": "positional",
+      "httpStatus": "fixture-missing",
+      "strategy": "blocks",
+      "entryCount": 0,
+      "hasData": false,
+      "changes": [],
+      "confirmed": [],
+      "missing": [
+        "opencode-go-standard"
+      ],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [
+        "离线模式：该来源未固化样本（无 fixture 配置），跳过",
+        "需要渲染后的文本，但本次没有取得（来源可能未开启 render）",
+        "未提取到任何价格候选"
+      ],
+      "fetch": {
+        "status": "fixture-missing",
+        "bytes": 0,
+        "ms": 0,
+        "notes": [],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": true
+    },
+    {
+      "planId": "zhipu-glm-coding-plan",
+      "planName": "GLM Coding Plan",
+      "url": "https://www.bigmodel.cn/glm-coding",
+      "status": "verified",
+      "mode": "positional",
+      "httpStatus": "fixture",
+      "strategy": "blocks",
+      "entryCount": 3,
+      "hasData": true,
+      "changes": [],
+      "confirmed": [
+        {
+          "tierId": "zhipu-glm-coding-plan-lite",
+          "tierName": "Lite",
+          "price": 94.4,
+          "pageLabel": "Lite",
+          "rawPrice": null
+        },
+        {
+          "tierId": "zhipu-glm-coding-plan-pro",
+          "tierName": "Pro",
+          "price": 430.4,
+          "pageLabel": "Pro",
+          "rawPrice": null
+        },
+        {
+          "tierId": "zhipu-glm-coding-plan-max",
+          "tierName": "Max",
+          "price": 862.4,
+          "pageLabel": "Max",
+          "rawPrice": null
+        }
+      ],
+      "missing": [],
+      "unassigned": [],
+      "quotaNotes": [],
+      "currencyNotes": [],
+      "warnings": [],
+      "fetch": {
+        "status": "fixture",
+        "bytes": 6720,
+        "ms": 0,
+        "notes": [
+          "读取渲染文本样本 render-zhipu.txt"
+        ],
+        "error": null
+      },
+      "rendered": false,
+      "hasRender": true
+    }
+  ],
+  "mode": "offline(fixtures)"
+}
